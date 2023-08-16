@@ -11,7 +11,7 @@ import RealityKitContent
 
 struct ContentView: View {
 
-    @State private var showImmersiveSpace = false
+    @State private var showImmersiveSpace = true
 
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
@@ -39,6 +39,8 @@ struct ContentView: View {
 //            .navigationTitle("Content")
 //            .padding()
 //        }
+//			.frame(width: 100, height: 100)
+//			.opacity(0.3)
         .onChange(of: showImmersiveSpace) { _, newValue in
             Task {
                 if newValue {
@@ -50,6 +52,9 @@ struct ContentView: View {
                 }
             }
         }
+		.task {
+			await openImmersiveSpace(id: "ImmersiveSpace")
+		}
     }
 	
 	func textLog(_ message: String) {

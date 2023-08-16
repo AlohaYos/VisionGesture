@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import UIKit
+import SwiftUI
+//import UIKit
 
 class VisionGesture_Cursor: VisionGestureProcessor {
     
@@ -24,9 +25,10 @@ class VisionGesture_Cursor: VisionGestureProcessor {
         stateReset()
     }
 
-	convenience init(delegate: UIViewController) {
+	convenience init(delegate: any View) {
 		self.init()
 		self.delegate = delegate as? any VisionGestureDelegate
+	//	self.delegate?.gestureFired(gesture: self, atPoints: [CGPointZero], triggerType: CursorType.fire.rawValue)
 	}
 
     // Gesture judging loop
