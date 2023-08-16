@@ -11,7 +11,7 @@ import RealityKitContent
 
 struct ContentView: View {
 
-    @State private var showImmersiveSpace = true
+    @State private var showImmersiveSpace = false
 
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
@@ -53,7 +53,9 @@ struct ContentView: View {
             }
         }
 		.task {
-			await openImmersiveSpace(id: "ImmersiveSpace")
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+				showImmersiveSpace = true
+			}
 		}
     }
 	

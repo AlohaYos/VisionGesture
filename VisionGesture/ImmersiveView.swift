@@ -21,7 +21,7 @@ struct ImmersiveView: View {
 		textLog("init")
 	}
 	var body: some View {
-		VStack {
+		ZStack {
 			Text(logText)
 				.frame(width: 500, height: 500, alignment: .topLeading)
 				.multilineTextAlignment(.leading)
@@ -44,6 +44,7 @@ struct ImmersiveView: View {
 			}
 			*/
 		}
+		
 		.onAppear {
 			textLog("onAppear")
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -67,10 +68,6 @@ struct ImmersiveView: View {
 			textLog("gestureProvider.monitorSessionEvents")
 			await gestureProvider.monitorSessionEvents()
 		}
-	}
-
-	func textLog(_ message: String) {
-		logText = message+"\r"+logText
 	}
 
 }
@@ -108,6 +105,16 @@ extension ImmersiveView: VisionGestureDelegate {
 			textLog("    (\(point.x),\(point.y)")
 		}
 	}
+}
+
+// MARK: Other job
+
+extension ImmersiveView {
+
+	func textLog(_ message: String) {
+		logText = message+"\r"+logText
+	}
+
 }
 
 #Preview {
