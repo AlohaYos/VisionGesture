@@ -11,7 +11,8 @@ import SwiftUI
 struct VisionGestureApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+			ImmersiveView()
+            //ContentView()
         }
 
         ImmersiveSpace(id: "ImmersiveSpace") {

@@ -17,34 +17,25 @@ struct ImmersiveView: View {
 	@State var logText: String = "Ready..."
 	var gestureProvider = VisionGestureProvider()
 
+	var viewModel: ViewModel = ViewModel()
+
 	init(){
 		textLog("init")
 	}
 	var body: some View {
 		ZStack {
 			Text(logText)
-				.frame(width: 500, height: 500, alignment: .topLeading)
+				.frame(width: 1250, height: 690, alignment: .topLeading)
 				.multilineTextAlignment(.leading)
 				.background(Color.blue)
-			/*
+				.foregroundColor(Color.white)
+//				.background(Color.black)
+//				.foregroundColor(Color.green)
 			RealityView { content in
-				// Add the initial RealityKit content
-				if let immersiveContentEntity = try? await Entity(named: "Immersive", in: realityKitContentBundle) {
-					content.add(immersiveContentEntity)
-					
-					// Add an ImageBasedLight for the immersive content
-					guard let resource = try? await EnvironmentResource(named: "ImageBasedLight") else { return }
-					let iblComponent = ImageBasedLightComponent(source: .single(resource), intensityExponent: 0.25)
-					immersiveContentEntity.components.set(iblComponent)
-					immersiveContentEntity.components.set(ImageBasedLightReceiverComponent(imageBasedLight: immersiveContentEntity))
-					
-					// Put skybox here.  See example in World project available at
-					// https://developer.apple.com/
-				}
+				content.add(viewModel.setupContentEntity())
+				_ = viewModel.addText(text: "Hello\nVision ")
 			}
-			*/
 		}
-		
 		.onAppear {
 			textLog("onAppear")
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {

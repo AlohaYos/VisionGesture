@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FFC256452A90D12B00E49FB1 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC256442A90D12B00E49FB1 /* ViewModel.swift */; };
 		FFD220452A8C72DF0036AFCC /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = FFD220442A8C72DF0036AFCC /* RealityKitContent */; };
 		FFD220472A8C72DF0036AFCC /* VisionGestureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD220462A8C72DF0036AFCC /* VisionGestureApp.swift */; };
 		FFD220492A8C72DF0036AFCC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD220482A8C72DF0036AFCC /* ContentView.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FFC256442A90D12B00E49FB1 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		FFD2203F2A8C72DF0036AFCC /* VisionGesture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionGesture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD220432A8C72DF0036AFCC /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
 		FFD220462A8C72DF0036AFCC /* VisionGestureApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionGestureApp.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				FFD220582A8C73A10036AFCC /* VisionGesture_Cursor.swift */,
 				FFD2205A2A8C73A70036AFCC /* VisionGestureProcessor.swift */,
 				FFD220592A8C73A40036AFCC /* VisionGestureProvider.swift */,
+				FFC256442A90D12B00E49FB1 /* ViewModel.swift */,
 				FFD2204C2A8C72DF0036AFCC /* ImageBasedLighting.skybox */,
 				FFD2204E2A8C72E10036AFCC /* Assets.xcassets */,
 				FFD220502A8C72E10036AFCC /* Preview Content */,
@@ -203,6 +206,7 @@
 				FFD220472A8C72DF0036AFCC /* VisionGestureApp.swift in Sources */,
 				FFD2204B2A8C72DF0036AFCC /* ImmersiveView.swift in Sources */,
 				FFD220672A8C740B0036AFCC /* CGPoint.swift in Sources */,
+				FFC256452A90D12B00E49FB1 /* ViewModel.swift in Sources */,
 				FFD220662A8C740B0036AFCC /* CGVector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
