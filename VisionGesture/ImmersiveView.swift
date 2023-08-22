@@ -48,7 +48,7 @@ struct ImmersiveView: View {
 			}
 			RealityView { content in
 				do {
-					var ball = try await Entity(named: "kuma")
+					var ball = try await Entity(named: "Immersive", in: realityKitContentBundle)
 					viewModel.setBallEntiry(ent: ball)
 				}
 				catch { return }
@@ -124,8 +124,8 @@ struct ImmersiveView: View {
 			Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
 				timerCount += 1
 				textLog("timer job : \(timerCount)")
-				var xPos: Float = Float(timerCount) * 0.1
-				add_point(pos: SIMD3(x: xPos, y: 1.5, z: -2))
+				var xPos: Float = Float(timerCount) * 0.02
+				add_point(pos: SIMD3(x: xPos, y: 1.5, z: -1))
 			}
 		}
 		.task {
