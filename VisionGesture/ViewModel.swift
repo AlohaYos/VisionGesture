@@ -1,16 +1,34 @@
 import RealityKit
 import Observation
 
+import RealityKitContent
+import Foundation
+import ARKit
+
 @Observable
 class ViewModel {
 	var logText: String = ""
+	var ball: Entity?
 
     private var contentEntity = Entity()
 
+	func setBallEntiry(ent: Entity?) {
+		ball = ent
+	}
+	
     func setupContentEntity() -> Entity {
         return contentEntity
     }
 
+	func addPoint(_ point: SIMD3<Scalar>) {
+		var ent = ball?.clone(recursive: true)
+		ent?.scale = [0.05, 0.05, 0.05]
+		ent?.position = SIMD3(x: point.x, y: point.y, z: point.z)
+		ent?.components.set(InputTargetComponent())
+		ent?.generateCollisionShapes(recursive: true)
+		contentEntity.addChild(ent!)
+	}
+	
 	func clearText() {
 		for child in contentEntity.children {
 			contentEntity.removeChild(child)

@@ -15,6 +15,7 @@ import ARKit
 @preconcurrency import ARKit
 #endif
 
+typealias Scalar = Float
 
 // MARK: VisionGestureDelegate (gesture callback)
 
@@ -24,6 +25,8 @@ protocol VisionGestureDelegate {
 	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int);
 	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
 	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
+	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>);
+	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4);
 }
 
 extension VisionGestureDelegate {
@@ -32,6 +35,8 @@ extension VisionGestureDelegate {
 	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int) {}
 	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
 	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
+	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>) {}
+	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4) {}
 }
 
 // MARK: VisionGestureProcessor (Base class of any Gesture)
@@ -400,10 +405,51 @@ class VisionGestureProcessor {
 		return CGPath(roundedRect: CGRect(x: point.x - 5, y: point.y - 5, width: 10, height: 10), cornerWidth: 5, cornerHeight: 5, transform: nil)
 	}
 
-	// TODO: ジェスチャーの空間座標を計算する
-	/*
-	func computeGestureCenterWithAxis() -> simd_float4x4? {
+	// 指定した３点で構成される三角形の中心座標と軸を計算（j1,j2が底辺、j3が頂点の三角形と仮定する）
+	func triangleCenter(joint1:SIMD3<Scalar>?, joint2:SIMD3<Scalar>?, joint3:SIMD3<Scalar>?) -> SIMD3<Scalar>? {
+		guard
+			let j1 = joint1,
+			let j2 = joint2,
+			let j3 = joint3
+		else {
+			return nil
+		}
 		
+		// center of triangle (j1,j2が底辺、j3が頂点の三角形と仮定する)
+		let h1 = (j1+j2) / 2	// half point of j1 & j2
+		let ct = (h1+j3) / 2	// center point (half point of h1 & j3)
+		
+		return SIMD3(ct.x, ct.y, ct.z)
+	}
+	
+	func triangleCenterWithAxis(joint1:SIMD3<Scalar>?, joint2:SIMD3<Scalar>?, joint3:SIMD3<Scalar>?) -> simd_float4x4? {
+		guard
+			let j1 = joint1,
+			let j2 = joint2,
+			let j3 = joint3
+		else {
+			return nil
+		}
+		
+//		let rightHandIndexFingerTipWorldPosition = matrix_multiply(rightHandAnchor.transform, rightHandIndexFingerTip.rootTransform).columns.3.xyz
+
+		// center of triangle (j1,j2が底辺、j3が頂点の三角形と仮定する)
+		let h1 = (j1+j2) / 2	// half point of j1 & j2
+		let ct = (h1+j3) / 2	// center point (half point of h1 & j3)
+
+		let xAxis = normalize(j2 - j1)
+		let yAxis = normalize(j3 - h1)
+		let zAxis = normalize(cross(xAxis, yAxis))
+
+		let triangleCenterWorldTransform = simd_matrix(
+			SIMD4(xAxis.x, xAxis.y, xAxis.z, 0),
+			SIMD4(yAxis.x, yAxis.y, yAxis.z, 0),
+			SIMD4(zAxis.x, zAxis.y, zAxis.z, 0),
+			SIMD4(ct.x, ct.y, ct.z, 1)
+		)
+		return triangleCenterWorldTransform
+
+		/*
 		// Compute a position in the middle of the heart gesture.
 		let halfway = (rightHandIndexFingerTipWorldPosition - leftHandThumbTipWorldPosition) / 2
 		let heartMidpoint = rightHandIndexFingerTipWorldPosition - halfway
@@ -424,8 +470,8 @@ class VisionGestureProcessor {
 			SIMD4(heartMidpoint.x, heartMidpoint.y, heartMidpoint.z, 1)
 		)
 		return heartMidpointWorldTransform
+		*/
 	}
-	*/
 }
 
 extension SIMD4 {

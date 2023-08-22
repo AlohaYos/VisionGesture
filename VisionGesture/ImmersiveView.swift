@@ -14,29 +14,88 @@ import RealityKit
 import RealityKitContent
 
 var timerCount = 0
+var timerCountQuick = 0
 
 struct ImmersiveView: View {
 	@State var logText: String = "Ready..."
 	var gestureProvider = VisionGestureProvider()
 	var viewModel: ViewModel = ViewModel()
+	@State var kuma: Entity = Entity()
+	@State var rotationA: Angle = .zero
 
 	init(){
 		textLog("init")
 	}
 	var body: some View {
 		ZStack {
-			Text(logText)
-				.frame(width: 1250, height: 690, alignment: .topLeading)
-				.multilineTextAlignment(.leading)
-				.background(Color.blue)
-				.foregroundColor(Color.white)
-//				.background(Color.black)
-//				.foregroundColor(Color.green)
-			RealityView { content in
-				content.add(viewModel.setupContentEntity())
-				viewModel.clearText()
-				// _ = viewModel.addText(text: "Gesture\nVision ")
+			RealityView { content, attachments in
+				let ent = Entity()
+				ent.scale = [4.0, 4.0, 4.0]
+				ent.position = SIMD3(x: 0, y: 1.5, z: -2)
+				content.add(ent)
+				if let textAttachement = attachments.entity(for: "text_view") {
+					textAttachement.position = SIMD3(x: 0, y: 0, z: 0)
+					ent.addChild(textAttachement)
+				}
+			} attachments: {
+				Text(logText)
+					.frame(width: 1250, height: 690, alignment: .topLeading)
+					.multilineTextAlignment(.leading)
+					.background(Color.blue)
+					.foregroundColor(Color.white)
+					//.font(.system(size: 32))
+					.tag("text_view")
 			}
+			RealityView { content in
+				do {
+					var ball = try await Entity(named: "kuma")
+					viewModel.setBallEntiry(ent: ball)
+				}
+				catch { return }
+				content.add(viewModel.setupContentEntity())
+//				viewModel.clearText()
+			}
+			RealityView { content, attachments in
+				do {
+					kuma = try await Entity(named: "kuma")
+					kuma.scale = [0.15, 0.15, 0.15]
+					kuma.position = SIMD3(x: 0, y: 1.5, z: -2)
+					kuma.components.set(InputTargetComponent())
+					kuma.generateCollisionShapes(recursive: true)
+					content.add(kuma)
+					
+					if let kumaAttachement = attachments.entity(for: "kuma_label") {
+						kumaAttachement.position = SIMD3(x: 0, y: -0.15, z: 2)
+						kuma.addChild(kumaAttachement)
+					}
+				} catch {
+					print("Entity encountered an error while loading the model.")
+					return
+				}
+			} attachments: {
+				Text("KUMA")
+					.foregroundColor(Color.red)
+					.font(.system(size: 32))
+					.tag("kuma_label")
+			}
+			.gesture(
+				DragGesture()
+					.targetedToEntity(kuma)
+					.targetedToAnyEntity()
+					.onChanged { value in	// 移動
+						value.entity.position = value.convert(value.location3D, from: .local, to: value.entity.parent!)
+					}
+//					.onChanged { _ in		// 回転
+//						rotationA.degrees += 5.0
+//						let m1 = Transform(pitch: Float(rotationA.radians)).matrix
+//						let m2 = Transform(yaw: Float(rotationA.radians)).matrix
+//						kuma.transform.matrix = matrix_multiply(m1, m2)
+//						kuma.position = SIMD3(x: 0, y: 1.5, z: -2)
+//						kuma.scale = [0.15, 0.15, 0.15]
+//					}
+			)
+				//.rotation3DEffect(Angle(degrees: Double(timerCount)), axis: (x: 0, y: 1, z: 0))
+
 		}
 		.onAppear {
 			textLog("onAppear")
@@ -65,10 +124,30 @@ struct ImmersiveView: View {
 			Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
 				timerCount += 1
 				textLog("timer job : \(timerCount)")
+				var xPos: Float = Float(timerCount) * 0.1
+				add_point(pos: SIMD3(x: xPos, y: 1.5, z: -2))
+			}
+		}
+		.task {
+			Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+				timerCountQuick += 1
+				rotate_kuma()
 			}
 		}
 	}
-
+	
+	func rotate_kuma() {
+		rotationA.degrees += 5.0
+		let m1 = Transform(roll: Float(0.0)).matrix
+		let m2 = Transform(yaw: Float(rotationA.radians)).matrix
+		kuma.transform.matrix = matrix_multiply(m1, m2)
+		kuma.position = SIMD3(x: 0, y: 1.5, z: -2)
+		kuma.scale = [0.15, 0.15, 0.15]
+	}
+	
+	func add_point(pos: SIMD3<Scalar>?) {
+		viewModel.addPoint(pos!)
+	}
 }
 
 // MARK: VisionGestureDelegate job
@@ -84,9 +163,6 @@ extension ImmersiveView: VisionGestureDelegate {
 		textLog("gestureMoved at point")
 		for point:CGPoint in atPoints {
 			textLog("    (\(point.x),\(point.y)")
-		}
-		if gesture is Gesture_Aloha {
-			// TODO: そのポイントに点を表示したい
 		}
 	}
 	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int) {
@@ -107,6 +183,19 @@ extension ImmersiveView: VisionGestureDelegate {
 			textLog("    (\(point.x),\(point.y)")
 		}
 	}
+	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>) {
+		textLog("gesturePlot")
+		if gesture is Gesture_Aloha {
+			add_point(pos: atPoints)
+		}
+	}
+	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4) {
+		textLog("gesturePlot")
+		if gesture is Gesture_Aloha {
+			// TODO: そのポイントに点を表示したい
+		}
+	}
+
 }
 
 // MARK: Other job
@@ -115,7 +204,7 @@ extension ImmersiveView {
 
 	func textLog(_ message: String) {
 		logText = message+"\r"+logText
-		_ = viewModel.addText(text: message)
+//		_ = viewModel.addText(text: message)
 	}
 
 }

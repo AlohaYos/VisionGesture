@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FF07F8A02A947CE800AED8AD /* kuma.usdz in Resources */ = {isa = PBXBuildFile; fileRef = FF07F89F2A947CE800AED8AD /* kuma.usdz */; };
 		FFB8EC782A91785600A79CE5 /* Gesture_Aloha.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB8EC772A91785600A79CE5 /* Gesture_Aloha.swift */; };
 		FFC256452A90D12B00E49FB1 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC256442A90D12B00E49FB1 /* ViewModel.swift */; };
 		FFD220452A8C72DF0036AFCC /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = FFD220442A8C72DF0036AFCC /* RealityKitContent */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FF07F89F2A947CE800AED8AD /* kuma.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = kuma.usdz; sourceTree = "<group>"; };
 		FFB8EC772A91785600A79CE5 /* Gesture_Aloha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture_Aloha.swift; sourceTree = "<group>"; };
 		FFC256442A90D12B00E49FB1 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		FFD2203F2A8C72DF0036AFCC /* VisionGesture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionGesture.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +92,7 @@
 				FFD2205A2A8C73A70036AFCC /* VisionGestureProcessor.swift */,
 				FFD220592A8C73A40036AFCC /* VisionGestureProvider.swift */,
 				FFC256442A90D12B00E49FB1 /* ViewModel.swift */,
+				FF07F89F2A947CE800AED8AD /* kuma.usdz */,
 				FFD2204C2A8C72DF0036AFCC /* ImageBasedLighting.skybox */,
 				FFD2204E2A8C72E10036AFCC /* Assets.xcassets */,
 				FFD220502A8C72E10036AFCC /* Preview Content */,
@@ -189,6 +192,7 @@
 				FFD2204F2A8C72E10036AFCC /* Assets.xcassets in Resources */,
 				FFD220522A8C72E10036AFCC /* Preview Assets.xcassets in Resources */,
 				FFD2204D2A8C72DF0036AFCC /* ImageBasedLighting.skybox in Resources */,
+				FF07F8A02A947CE800AED8AD /* kuma.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
