@@ -6,10 +6,14 @@
 //
 
 import Foundation
+#if os(visionOS)
 import SwiftUI
-//import UIKit
+#else
+import UIKit
+#endif
 
-class VisionGesture_Cursor: VisionGestureProcessor {
+class VisionGesture_Cursor: VisionGestureProcessor
+{
     
 	enum CursorType: Int {
 		case unknown = 0
