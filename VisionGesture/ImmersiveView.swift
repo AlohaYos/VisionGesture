@@ -115,7 +115,8 @@ struct ImmersiveView: View {
 		}
 		.task {
 			textLog("gestureProvider.appendGesture")
-			gestureProvider.appendGesture(VisionGesture_Cursor(delegate: self))
+			gestureProvider.appendGesture(Gesture_Cursor(delegate: self))
+			gestureProvider.appendGesture(Gesture_Aloha(delegate: self))
 			textLog("gestureProvider.start")
 			await gestureProvider.start()
 		}

@@ -6,23 +6,9 @@
 //
 
 import SwiftUI
-//import RealityKit
 
 @main
 struct VisionGestureApp: App {
-	/*
-	 var body: some SwiftUI.Scene {
-	 ImmersiveSpace {
-	 RealityView { content in
-	 ImmersiveView()
-	 }
-	 .task {
-	 //				await model.runSession()
-	 }
-	 }
-	 }
-	 */
-	
 	var body: some Scene {
 		WindowGroup {
 			ContentView()

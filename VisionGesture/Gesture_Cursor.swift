@@ -12,7 +12,7 @@ import SwiftUI
 import UIKit
 #endif
 
-class VisionGesture_Cursor: VisionGestureProcessor
+class Gesture_Cursor: VisionGestureProcessor
 {
     
 	enum CursorType: Int {

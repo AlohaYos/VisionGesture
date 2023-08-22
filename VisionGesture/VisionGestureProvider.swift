@@ -93,7 +93,7 @@ class VisionGestureProvider: NSObject {
 			}
 		}
 	}
-
+/*
 	func computeTransformOfUserPerformedHeartGesture() -> simd_float4x4? {
 		// Get the latest hand anchors, return false if either of them isn't tracked.
 		guard let leftHandAnchor = latestHandTracking.left,
@@ -156,7 +156,7 @@ class VisionGestureProvider: NSObject {
 		)
 		return heartMidpointWorldTransform
 	}
-
+*/
 
 	func appendGesture(_ gesture: VisionGestureProcessor) {
 		gestureProcessors.append(gesture)
