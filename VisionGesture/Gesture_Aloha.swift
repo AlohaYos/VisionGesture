@@ -6,18 +6,26 @@
 //
 
 import Foundation
+#if os(visionOS)
+import SwiftUI
+#else
 import UIKit
+#endif
 
-class Gesture_Aloha: SpatialGestureProcessor {
-    
-    override init() {
+class Gesture_Aloha: VisionGestureProcessor
+{
+	override init() {
         super.init()
         stateReset()
     }
 
 	convenience init(delegate: UIViewController) {
 		self.init()
+#if os(visionOS)
+		self.delegate = delegate as? any VisionGestureDelegate
+#else
 		self.delegate = delegate as? any SpatialGestureDelegate
+#endif
 	}
 
     // Gesture judging loop
@@ -55,16 +63,16 @@ class Gesture_Aloha: SpatialGestureProcessor {
     }
 	
 	func centerOfShaka() -> CGPoint {
-		let posThumb: CGPoint? = jointPosition(hand: .right, finger: .thumb, joint: .tip)
-		let posLittle:  CGPoint? = jointPosition(hand: .left, finger: .little, joint: .tip)
+		let posThumb: CGPoint? = cv2(jointPosition(hand: .right, finger: .thumb, joint: .tip))
+		let posLittle:  CGPoint? = cv2(jointPosition(hand: .left, finger: .little, joint: .tip))
 		guard let posThumb, let posLittle else { return CGPointZero }
 
 		return CGPoint.midPoint(p1: posThumb, p2: posLittle)
 	}
 
 	func shakaTips() -> [CGPoint] {
-		let posThumb: CGPoint? = jointPosition(hand: .right, finger: .thumb, joint: .tip)
-		let posLittle:  CGPoint? = jointPosition(hand: .left, finger: .little, joint: .tip)
+		let posThumb: CGPoint? = cv2(jointPosition(hand: .right, finger: .thumb, joint: .tip))
+		let posLittle:  CGPoint? = cv2(jointPosition(hand: .left, finger: .little, joint: .tip))
 		guard let posThumb, let posLittle else { return [CGPointZero] }
 		return [posThumb, posLittle]
 	}

@@ -94,15 +94,6 @@ class VisionGestureProvider: NSObject {
 		}
 	}
 
-	/// Computes a transform representing the heart gesture performed by the user.
-	///
-	/// - Returns:
-	///  * A right-handed transform for the heart gesture, where:
-	///     * The origin is in the center of the gesture
-	///     * The X axis is parallel to the vector from left thumb knuckle to right thumb knuckle
-	///     * The Y axis is parallel to the vector from right thumb tip to right index finger tip.
-	///  * `nil` if either of the hands isn't tracked or the user isn't performing a heart gesture
-	///  (the index fingers and thumbs of both hands need to touch).
 	func computeTransformOfUserPerformedHeartGesture() -> simd_float4x4? {
 		// Get the latest hand anchors, return false if either of them isn't tracked.
 		guard let leftHandAnchor = latestHandTracking.left,

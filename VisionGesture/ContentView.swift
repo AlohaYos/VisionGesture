@@ -19,28 +19,17 @@ struct ContentView: View {
 	@State var logText: String = "Ready..."
 	
     var body: some View {
-//        NavigationSplitView {
-//            List {
-//                Text("Item")
-//            }
-//            .navigationTitle("Sidebar")
-//        } detail: {
-            VStack {
-//                Model3D(named: "Scene", bundle: realityKitContentBundle)
-//                    .padding(.bottom, 50)
 
-                Text(logText)
-					.multilineTextAlignment(.leading)
+		VStack {
+			Text(logText)
+				.multilineTextAlignment(.leading)
+				.opacity(0.3)
 
-                Toggle("Show ImmersiveSpace", isOn: $showImmersiveSpace)
-                    .toggleStyle(.button)
-                    .padding(.top, 50)
+			Toggle("Toggle Immersive", isOn: $showImmersiveSpace)
+				.toggleStyle(.button)
+				.padding(.top, 50)
+				.opacity(0.3)
             }
-//            .navigationTitle("Content")
-//            .padding()
-//        }
-//			.frame(width: 100, height: 100)
-//			.opacity(0.3)
         .onChange(of: showImmersiveSpace) { _, newValue in
             Task {
                 if newValue {

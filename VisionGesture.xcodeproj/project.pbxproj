@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FFB8EC782A91785600A79CE5 /* Gesture_Aloha.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB8EC772A91785600A79CE5 /* Gesture_Aloha.swift */; };
 		FFC256452A90D12B00E49FB1 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC256442A90D12B00E49FB1 /* ViewModel.swift */; };
 		FFD220452A8C72DF0036AFCC /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = FFD220442A8C72DF0036AFCC /* RealityKitContent */; };
 		FFD220472A8C72DF0036AFCC /* VisionGestureApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD220462A8C72DF0036AFCC /* VisionGestureApp.swift */; };
@@ -15,7 +16,7 @@
 		FFD2204D2A8C72DF0036AFCC /* ImageBasedLighting.skybox in Resources */ = {isa = PBXBuildFile; fileRef = FFD2204C2A8C72DF0036AFCC /* ImageBasedLighting.skybox */; };
 		FFD2204F2A8C72E10036AFCC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFD2204E2A8C72E10036AFCC /* Assets.xcassets */; };
 		FFD220522A8C72E10036AFCC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FFD220512A8C72E10036AFCC /* Preview Assets.xcassets */; };
-		FFD2205B2A8C73A70036AFCC /* VisionGesture_Cursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD220582A8C73A10036AFCC /* VisionGesture_Cursor.swift */; };
+		FFD2205B2A8C73A70036AFCC /* Gesture_Cursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD220582A8C73A10036AFCC /* Gesture_Cursor.swift */; };
 		FFD2205C2A8C73A70036AFCC /* VisionGestureProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD220592A8C73A40036AFCC /* VisionGestureProvider.swift */; };
 		FFD2205D2A8C73A70036AFCC /* VisionGestureProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD2205A2A8C73A70036AFCC /* VisionGestureProcessor.swift */; };
 		FFD220642A8C740B0036AFCC /* CGAffineTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD2205F2A8C740B0036AFCC /* CGAffineTransform.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FFB8EC772A91785600A79CE5 /* Gesture_Aloha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture_Aloha.swift; sourceTree = "<group>"; };
 		FFC256442A90D12B00E49FB1 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		FFD2203F2A8C72DF0036AFCC /* VisionGesture.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionGesture.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD220432A8C72DF0036AFCC /* RealityKitContent */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RealityKitContent; sourceTree = "<group>"; };
@@ -35,7 +37,7 @@
 		FFD2204C2A8C72DF0036AFCC /* ImageBasedLighting.skybox */ = {isa = PBXFileReference; lastKnownFileType = file.skybox; path = ImageBasedLighting.skybox; sourceTree = "<group>"; };
 		FFD2204E2A8C72E10036AFCC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FFD220512A8C72E10036AFCC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		FFD220582A8C73A10036AFCC /* VisionGesture_Cursor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionGesture_Cursor.swift; sourceTree = "<group>"; };
+		FFD220582A8C73A10036AFCC /* Gesture_Cursor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture_Cursor.swift; sourceTree = "<group>"; };
 		FFD220592A8C73A40036AFCC /* VisionGestureProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionGestureProvider.swift; sourceTree = "<group>"; };
 		FFD2205A2A8C73A70036AFCC /* VisionGestureProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionGestureProcessor.swift; sourceTree = "<group>"; };
 		FFD2205F2A8C740B0036AFCC /* CGAffineTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGAffineTransform.swift; sourceTree = "<group>"; };
@@ -83,7 +85,8 @@
 				FFD220462A8C72DF0036AFCC /* VisionGestureApp.swift */,
 				FFD220482A8C72DF0036AFCC /* ContentView.swift */,
 				FFD2204A2A8C72DF0036AFCC /* ImmersiveView.swift */,
-				FFD220582A8C73A10036AFCC /* VisionGesture_Cursor.swift */,
+				FFB8EC772A91785600A79CE5 /* Gesture_Aloha.swift */,
+				FFD220582A8C73A10036AFCC /* Gesture_Cursor.swift */,
 				FFD2205A2A8C73A70036AFCC /* VisionGestureProcessor.swift */,
 				FFD220592A8C73A40036AFCC /* VisionGestureProvider.swift */,
 				FFC256442A90D12B00E49FB1 /* ViewModel.swift */,
@@ -200,13 +203,14 @@
 				FFD220682A8C740B0036AFCC /* CGRect.swift in Sources */,
 				FFD2205D2A8C73A70036AFCC /* VisionGestureProcessor.swift in Sources */,
 				FFD220492A8C72DF0036AFCC /* ContentView.swift in Sources */,
-				FFD2205B2A8C73A70036AFCC /* VisionGesture_Cursor.swift in Sources */,
+				FFD2205B2A8C73A70036AFCC /* Gesture_Cursor.swift in Sources */,
 				FFD220652A8C740B0036AFCC /* CGSize.swift in Sources */,
 				FFD2205C2A8C73A70036AFCC /* VisionGestureProvider.swift in Sources */,
 				FFD220472A8C72DF0036AFCC /* VisionGestureApp.swift in Sources */,
 				FFD2204B2A8C72DF0036AFCC /* ImmersiveView.swift in Sources */,
 				FFD220672A8C740B0036AFCC /* CGPoint.swift in Sources */,
 				FFC256452A90D12B00E49FB1 /* ViewModel.swift in Sources */,
+				FFB8EC782A91785600A79CE5 /* Gesture_Aloha.swift in Sources */,
 				FFD220662A8C740B0036AFCC /* CGVector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -13,10 +13,11 @@ import RealityKit
 #endif
 import RealityKitContent
 
+var timerCount = 0
+
 struct ImmersiveView: View {
 	@State var logText: String = "Ready..."
 	var gestureProvider = VisionGestureProvider()
-
 	var viewModel: ViewModel = ViewModel()
 
 	init(){
@@ -33,7 +34,8 @@ struct ImmersiveView: View {
 //				.foregroundColor(Color.green)
 			RealityView { content in
 				content.add(viewModel.setupContentEntity())
-				_ = viewModel.addText(text: "Hello\nVision ")
+				viewModel.clearText()
+				// _ = viewModel.addText(text: "Gesture\nVision ")
 			}
 		}
 		.onAppear {
@@ -59,6 +61,12 @@ struct ImmersiveView: View {
 			textLog("gestureProvider.monitorSessionEvents")
 			await gestureProvider.monitorSessionEvents()
 		}
+		.task {
+			Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+				timerCount += 1
+				textLog("timer job : \(timerCount)")
+			}
+		}
 	}
 
 }
@@ -76,6 +84,9 @@ extension ImmersiveView: VisionGestureDelegate {
 		textLog("gestureMoved at point")
 		for point:CGPoint in atPoints {
 			textLog("    (\(point.x),\(point.y)")
+		}
+		if gesture is Gesture_Aloha {
+			// TODO: そのポイントに点を表示したい
 		}
 	}
 	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int) {
@@ -104,6 +115,7 @@ extension ImmersiveView {
 
 	func textLog(_ message: String) {
 		logText = message+"\r"+logText
+		_ = viewModel.addText(text: message)
 	}
 
 }

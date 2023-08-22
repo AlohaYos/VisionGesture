@@ -400,6 +400,32 @@ class VisionGestureProcessor {
 		return CGPath(roundedRect: CGRect(x: point.x - 5, y: point.y - 5, width: 10, height: 10), cornerWidth: 5, cornerHeight: 5, transform: nil)
 	}
 
+	// TODO: ジェスチャーの空間座標を計算する
+	/*
+	func computeGestureCenterWithAxis() -> simd_float4x4? {
+		
+		// Compute a position in the middle of the heart gesture.
+		let halfway = (rightHandIndexFingerTipWorldPosition - leftHandThumbTipWorldPosition) / 2
+		let heartMidpoint = rightHandIndexFingerTipWorldPosition - halfway
+		
+		// Compute the vector from left thumb knuckle to right thumb knuckle and normalize (X axis).
+		let xAxis = normalize(rightHandThumbKnuckleWorldPosition - leftHandThumbKnuckleWorldPosition)
+		
+		// Compute the vector from right thumb tip to right index finger tip and normalize (Y axis).
+		let yAxis = normalize(rightHandIndexFingerTipWorldPosition - rightHandThumbTipWorldPosition)
+		
+		let zAxis = normalize(cross(xAxis, yAxis))
+		
+		// Create the final transform for the heart gesture from the three axes and midpoint vector.
+		let heartMidpointWorldTransform = simd_matrix(
+			SIMD4(xAxis.x, xAxis.y, xAxis.z, 0),
+			SIMD4(yAxis.x, yAxis.y, yAxis.z, 0),
+			SIMD4(zAxis.x, zAxis.y, zAxis.z, 0),
+			SIMD4(heartMidpoint.x, heartMidpoint.y, heartMidpoint.z, 1)
+		)
+		return heartMidpointWorldTransform
+	}
+	*/
 }
 
 extension SIMD4 {

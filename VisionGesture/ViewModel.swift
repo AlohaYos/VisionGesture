@@ -3,6 +3,7 @@ import Observation
 
 @Observable
 class ViewModel {
+	var logText: String = ""
 
     private var contentEntity = Entity()
 
@@ -10,19 +11,32 @@ class ViewModel {
         return contentEntity
     }
 
+	func clearText() {
+		for child in contentEntity.children {
+			contentEntity.removeChild(child)
+		}
+	}
+	
     func addText(text: String) -> Entity {
 
-        let textMeshResource: MeshResource = .generateText(text,
-                                                           extrusionDepth: 0.05,
-                                                           font: .systemFont(ofSize: 0.3),
+		logText = text+"\r"+logText
+		clearText()
+
+        let textMeshResource: MeshResource = .generateText(logText,
+                                                           extrusionDepth: 0.00,
+                                                           font: .systemFont(ofSize: 0.05),
                                                            containerFrame: .zero,
-                                                           alignment: .center,
+														   alignment: .natural,
                                                            lineBreakMode: .byWordWrapping)
 
-        let material = UnlitMaterial(color: .white)
+		let material = UnlitMaterial(color: .green)
 
         let textEntity = ModelEntity(mesh: textMeshResource, materials: [material])
-        textEntity.position = SIMD3(x: -(textMeshResource.bounds.extents.x / 2), y: 1.5, z: -2)
+		let offsetX: Float = 0.2
+//		let offsetX: Float = -(textMeshResource.bounds.extents.x / 2)
+		let offsetY = textMeshResource.bounds.extents.y - 1.4
+		textEntity.position = SIMD3(x: offsetX, y: 1.5-offsetY, z: -2)
+//		textEntity.position = SIMD3(x: -(textMeshResource.bounds.extents.x / 2), y: 1.5, z: -2)
 
         contentEntity.addChild(textEntity)
 

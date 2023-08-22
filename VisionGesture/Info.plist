@@ -11,7 +11,21 @@
 		<key>UIApplicationPreferredDefaultSceneSessionRole</key>
 		<string>UISceneSessionRoleImmersiveApplication</string>
 		<key>UISceneConfigurations</key>
-		<dict/>
+		<dict>
+			<key>UIWindowSceneSessionRoleCPServicesImmersive</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string></string>
+					<key>UISceneDelegateClassName</key>
+					<string></string>
+					<key>UISceneConfigurationName</key>
+					<string></string>
+					<key>UISceneStoryboardFile</key>
+					<string></string>
+				</dict>
+			</array>
+		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
 	<string></string>
