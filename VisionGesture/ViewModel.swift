@@ -21,12 +21,13 @@ class ViewModel {
     }
 
 	func addPoint(_ point: SIMD3<Scalar>) {
-		var ent = ball?.clone(recursive: true)
-		ent?.scale = [0.05, 0.05, 0.05]
-		ent?.position = SIMD3(x: point.x, y: point.y, z: point.z)
-		ent?.components.set(InputTargetComponent())
-		ent?.generateCollisionShapes(recursive: true)
-		contentEntity.addChild(ent!)
+		guard let b = ball else { return }
+		let ent = b.clone(recursive: true)
+		ent.scale = [0.05, 0.05, 0.05]
+		ent.position = SIMD3(x: point.x, y: point.y, z: point.z)
+		ent.components.set(InputTargetComponent())
+		ent.generateCollisionShapes(recursive: true)
+		contentEntity.addChild(ent)
 	}
 	
 	func clearText() {

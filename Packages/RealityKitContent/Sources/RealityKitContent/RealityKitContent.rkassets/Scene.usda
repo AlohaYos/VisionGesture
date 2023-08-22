@@ -5,47 +5,16 @@
     upAxis = "Y"
 )
 
-def Xform "Root"
+def Xform "Root" (
+    prepend apiSchemas = ["MaterialBindingAPI"]
+)
 {
     reorder nameChildren = ["Sphere", "_GridMaterial", "_PlainMaterial"]
-    rel material:binding = None (
+    rel material:binding = </Root/_PlainMaterial/Material> (
         bindMaterialAs = "weakerThanDescendants"
     )
-
-    def Sphere "Sphere" (
-        active = true
-        prepend apiSchemas = ["MaterialBindingAPI"]
-    )
-    {
-        rel material:binding = </Root/_PlainMaterial/Material> (
-            bindMaterialAs = "weakerThanDescendants"
-        )
-        double radius = 0.05
-        quatf xformOp:orient = (1, 0, 0, 0)
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0, 0.0004)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-
-        def RealityKitComponent "Collider"
-        {
-            uint group = 1
-            uniform token info:id = "RealityKit.Collider"
-            uint mask = 4294967295
-            token type = "Default"
-
-            def RealityKitStruct "Shape"
-            {
-                float3 extent = (0.2, 0.2, 0.2)
-                float radius = 0.05
-                token shapeType = "Sphere"
-            }
-        }
-
-        def RealityKitComponent "InputTarget"
-        {
-            uniform token info:id = "RealityKit.InputTarget"
-        }
-    }
+    float3 xformOp:translate = (0, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
     def "_PlainMaterial" (
         active = true
@@ -53,7 +22,64 @@ def Xform "Root"
     )
     {
         float3 xformOp:scale = (1, 1, 1)
+        float3 xformOp:translate = (0, 0.015, -0.01)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+    }
+
+    def RealityKitComponent "VFXEmitter"
+    {
+        uniform token info:id = "RealityKit.VFXEmitter"
+
+        def RealityKitStruct "currentState"
+        {
+            token birthDirection = "Constant"
+            token birthLocation = "Surface"
+            float3 birthLocationVertex = (200, 200, 200)
+            float3 emissionDirection = (0, 1.5, -1)
+            double emissionDuration = 6
+            token emitterShape = "Sphere"
+            double idleDuration = 2
+            bool isEmitting = 1
+            bool isLocal = 0
+            bool isSpawningEnabled = 0
+            float particleSpeed = 0.05
+            float radialAmount = 10.283
+            float3 shapeSize = (0.1, 0.1, 0.1)
+            bool spawnInheritParentColor = 1
+            token spawnOccasion = "OnBirth"
+            float spawnSpreadFactor = 0.17453292
+            float spawnSpreadFactorVariation = 0.08726646
+            double warmupDuration = 2
+
+            def RealityKitStruct "mainEmitter"
+            {
+                token billboardMode = "Billboard"
+                token blendMode = "Additive"
+                float dampingFactor = 0
+                float4 endColorA = (1, 0.29358652, 0, 1)
+                bool isLightingEnabled = 1
+                float noiseStrength = 0
+                token opacityOverLife = "GradualFadeInOut"
+                float particleAngularVelocity = 0
+                double particleLifeSpan = 2
+                float particleMass = 1
+                float particleSize = 0.04
+                float radialGravityStrength = 0
+                float sizeMultiplierAtEndOfLifespan = 0.1
+                float sizeMultiplierAtEndOfLifespanPower = 3
+                token sortOrder = "IncreasingDepth"
+                float4 startColorA = (1, 0.019407865, 0, 1)
+                bool useEndColor = 1
+                bool useEndColorRange = 0
+                bool useStartColorRange = 0
+                float vortexStrength = 2
+            }
+
+            def RealityKitStruct "spawnedEmitter"
+            {
+                token opacityOverLife = "GradualFadeInOut"
+            }
+        }
     }
 }
 

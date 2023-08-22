@@ -28,6 +28,13 @@ struct ImmersiveView: View {
 	}
 	var body: some View {
 		ZStack {
+			RealityView { content in
+				if let scene = try? await Entity(named: "Scene", in: realityKitContentBundle) {	// パーティクル
+//					scene.scale = [0.15, 0.15, 0.15]
+//					scene.position = SIMD3(x: 0, y: 1.5, z: -1)
+					content.add(scene)
+				}
+			}
 			RealityView { content, attachments in
 				let ent = Entity()
 				ent.scale = [4.0, 4.0, 4.0]
@@ -48,7 +55,7 @@ struct ImmersiveView: View {
 			}
 			RealityView { content in
 				do {
-					var ball = try await Entity(named: "Immersive", in: realityKitContentBundle)
+					var ball = try await Entity(named: "Sun", in: realityKitContentBundle)
 					viewModel.setBallEntiry(ent: ball)
 				}
 				catch { return }
@@ -57,7 +64,7 @@ struct ImmersiveView: View {
 			}
 			RealityView { content, attachments in
 				do {
-					kuma = try await Entity(named: "kuma")
+					kuma = try await Entity(named: "kuma", in: realityKitContentBundle)
 					kuma.scale = [0.15, 0.15, 0.15]
 					kuma.position = SIMD3(x: 0, y: 1.5, z: -2)
 					kuma.components.set(InputTargetComponent())
