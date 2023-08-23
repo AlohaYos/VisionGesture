@@ -9,14 +9,26 @@ import ARKit
 class ViewModel {
 	var logText: String = ""
 	var ball: Entity?
+	var earch: Entity?
 	var plane: Entity?
 	var triangle: Entity?
 	var glove: Entity?
+	var thumbTip: Entity?
+	var littleTip: Entity?
+	var wristTip: Entity?
 
     private var contentEntity = Entity()
 
 	func setBallEntiry(ent: Entity?) {
 		ball = ent
+	}
+	func setEarthEntiry(ent: Entity?) {
+		thumbTip = ent
+		littleTip = thumbTip?.clone(recursive: true)
+		wristTip = thumbTip?.clone(recursive: true)
+		contentEntity.addChild(thumbTip!)
+		contentEntity.addChild(littleTip!)
+		contentEntity.addChild(wristTip!)
 	}
 	func setPlaneEntiry(ent: Entity?) {
 		plane = ent
@@ -29,6 +41,17 @@ class ViewModel {
         return contentEntity
     }
 
+	func setPoints(_ point: [SIMD3<Scalar>?]) {
+		guard let b = thumbTip else { return }
+		guard let thumbPos = point[0], let littlePos = point[1], let wristPos = point[2] else { return }
+
+		thumbTip?.position = thumbPos
+		wristTip?.position = wristPos
+		littleTip?.position = littlePos
+		thumbTip?.scale = [0.1, 0.1, 0.1]
+		wristTip?.scale = [0.1, 0.1, 0.1]
+		littleTip?.scale = [0.1, 0.1, 0.1]
+	}
 	func addPoint(_ point: SIMD3<Scalar>) {
 		guard let b = ball else { return }
 		let ent = b.clone(recursive: true)

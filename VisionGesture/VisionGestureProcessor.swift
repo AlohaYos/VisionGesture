@@ -27,6 +27,7 @@ protocol VisionGestureDelegate {
 	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
 	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>);
 	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4);
+	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]);
 }
 
 extension VisionGestureDelegate {
@@ -37,6 +38,7 @@ extension VisionGestureDelegate {
 	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
 	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>) {}
 	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4) {}
+	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]) {}
 }
 
 // MARK: VisionGestureProcessor (Base class of any Gesture)

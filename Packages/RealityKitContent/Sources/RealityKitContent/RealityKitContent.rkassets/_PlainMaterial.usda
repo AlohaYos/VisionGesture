@@ -36,12 +36,15 @@ def Xform "Root"
 
     def "Rubber_Glove" (
         active = true
+        customData = {
+            float3 rotationEulerHint = (3.8397243, 7.450582e-9, -0.34906578)
+        }
         prepend references = @RubberGlove.usdz@
     )
     {
-        quatf xformOp:orient = (1, 0, 0, 0)
+        quatf xformOp:orient = (-0.33682406, 0.9254166, -0.1631759, 0.059391156)
         float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0, 0)
+        float3 xformOp:translate = (0, 0.1, 0.035)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
     }
 }
