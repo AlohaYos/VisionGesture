@@ -39,12 +39,19 @@ class Gesture_Aloha: VisionGestureProcessor
             break
         case .waitForRelease:	// wait for pose release
 			delegate?.gestureMoved(gesture: self, atPoints: shakaTips())
-			var pos: SIMD3<Scalar>? = triangleCenter(
+			let pos: SIMD3<Scalar>? = triangleCenter(
 				joint1:jointPosition(hand:.right, finger:.thumb, joint: .tip),
 				joint2:jointPosition(hand:.right, finger:.little, joint: .tip),
 				joint3:jointPosition(hand:.right, finger:.wrist, joint: .tip))
 			if let p = pos {
 				delegate?.gesturePlotSIMD3(gesture: self, atPoints: p)
+			}
+			let pos4: simd_float4x4? = triangleCenterWithAxis(
+				joint1:jointPosition(hand:.right, finger:.thumb, joint: .tip),
+				joint2:jointPosition(hand:.right, finger:.little, joint: .tip),
+				joint3:jointPosition(hand:.right, finger:.wrist, joint: .tip))
+			if let p = pos4 {
+				delegate?.gesturePlotSIMD4(gesture: self, atPoints: p)
 			}
             if(!isShakaPose()) {	// wait until pose released
 				delegate?.gestureEnded(gesture: self, atPoints: [CGPointZero])

@@ -9,13 +9,22 @@ import ARKit
 class ViewModel {
 	var logText: String = ""
 	var ball: Entity?
+	var plane: Entity?
+	var triangle: Entity?
+	var glove: Entity?
 
     private var contentEntity = Entity()
 
 	func setBallEntiry(ent: Entity?) {
 		ball = ent
 	}
-	
+	func setPlaneEntiry(ent: Entity?) {
+		plane = ent
+	}
+	func setTriangleEntiry(ent: Entity?) {
+		triangle = ent
+	}
+
     func setupContentEntity() -> Entity {
         return contentEntity
     }
@@ -28,6 +37,29 @@ class ViewModel {
 		ent.components.set(InputTargetComponent())
 		ent.generateCollisionShapes(recursive: true)
 		contentEntity.addChild(ent)
+	}
+	
+	func addPoint4(_ mtx4: simd_float4x4) {
+		guard let b = plane else { return }
+		let ent = b.clone(recursive: true)
+
+		ent.transform = Transform(matrix: mtx4)
+		ent.scale = [0.1, 0.1, 0.1]
+		ent.components.set(InputTargetComponent())
+		ent.generateCollisionShapes(recursive: true)
+		contentEntity.addChild(ent)
+	}
+	
+	
+	func setGloveEntiry(ent: Entity?) {
+		glove = ent
+		glove?.scale = [0.0, 0.0, 0.0]
+		contentEntity.addChild(glove!)
+	}
+
+	func moveGlove(_ mtx4: simd_float4x4) {
+		glove?.transform = Transform(matrix: mtx4)
+		glove?.scale = [0.5, 0.5, 0.5]
 	}
 	
 	func clearText() {

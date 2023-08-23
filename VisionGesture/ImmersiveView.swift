@@ -12,6 +12,7 @@ import RealityKit
 @preconcurrency import RealityKit
 #endif
 import RealityKitContent
+import SceneKit
 
 var timerCount = 0
 var timerCountQuick = 0
@@ -55,8 +56,14 @@ struct ImmersiveView: View {
 			}
 			RealityView { content in
 				do {
-					var ball = try await Entity(named: "Sun", in: realityKitContentBundle)
+					let ball = try await Entity(named: "Sun", in: realityKitContentBundle)
 					viewModel.setBallEntiry(ent: ball)
+					let plane = try await Entity(named: "ToyBiplane", in: realityKitContentBundle)
+					viewModel.setPlaneEntiry(ent: plane)
+					let triangle = try await Entity(named: "Triangle", in: realityKitContentBundle)
+					viewModel.setTriangleEntiry(ent: triangle)
+					let glove = try await Entity(named: "RubberGlove", in: realityKitContentBundle)
+					viewModel.setGloveEntiry(ent: glove)
 				}
 				catch { return }
 				content.add(viewModel.setupContentEntity())
@@ -130,10 +137,34 @@ struct ImmersiveView: View {
 		}
 		.task {
 			Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+				let gesDum = Gesture_Aloha(delegate: self)
 				timerCount += 1
 				textLog("timer job : \(timerCount)")
-				var xPos: Float = Float(timerCount) * 0.02
-				add_point(pos: SIMD3(x: xPos, y: 1.5, z: -1))
+				let xPos: Float = Float(timerCount) * 0.02 - 0.8
+//				add_point(pos: SIMD3(x: xPos, y: 1.5, z: -1))
+				viewModel.addPoint(SIMD3(x: xPos, y: 1.5, z: -1))
+// ---
+				var delta = timerCount*10
+				var joint1 = SIMD3(x: xPos-0.25, y: 1.7, z: -1)	// 底辺左
+				var joint2 = SIMD3(x: xPos+0.25, y: 1.7, z: -1)	// 底辺右
+				var joint3 = SIMD3(x: xPos,      y: 1.8, z: -1)	// 頂点
+				var mtx: simd_float4x4? = gesDum.triangleCenterWithAxis(joint1:joint1, joint2:joint2, joint3:joint3)
+				var rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(delta), 0, 0, 1)	// z軸を中心とした10度回転
+//				let rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(delta), 1, 0, 0)	// x軸を中心とした10度回転
+				var rotateSimd = matrix_float4x4(rotateMat)
+				var mtxOut = mtx! * rotateSimd
+//				add_point4(pos: mtxOut)
+				viewModel.addPoint4(mtxOut)
+				// ---
+				delta = timerCount*5
+				joint1 = SIMD3(x: xPos-0.25, y: 1.2, z: -1)	// 底辺左
+				joint2 = SIMD3(x: xPos+0.25, y: 1.2, z: -1)	// 底辺右
+				joint3 = SIMD3(x: xPos,      y: 1.3, z: -1)	// 頂点
+				mtx = gesDum.triangleCenterWithAxis(joint1:joint1, joint2:joint2, joint3:joint3)
+				rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(delta), 0, 1, 0)	// Y軸を中心とした10度回転
+				rotateSimd = matrix_float4x4(rotateMat)
+				mtxOut = mtx! * rotateSimd
+				viewModel.moveGlove(mtxOut)
 			}
 		}
 		.task {
@@ -154,7 +185,14 @@ struct ImmersiveView: View {
 	}
 	
 	func add_point(pos: SIMD3<Scalar>?) {
-		viewModel.addPoint(pos!)
+		if let p = pos {
+			viewModel.addPoint(p)
+		}
+	}
+	func add_point4(pos: simd_float4x4?) {
+		if let p = pos {
+			viewModel.addPoint4(p)
+		}
 	}
 }
 
@@ -192,15 +230,15 @@ extension ImmersiveView: VisionGestureDelegate {
 		}
 	}
 	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>) {
-		textLog("gesturePlot")
+		textLog("gesturePlot3")
 		if gesture is Gesture_Aloha {
 			add_point(pos: atPoints)
 		}
 	}
 	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4) {
-		textLog("gesturePlot")
+		textLog("gesturePlot4")
 		if gesture is Gesture_Aloha {
-			// TODO: そのポイントに点を表示したい
+			viewModel.moveGlove(atPoints)
 		}
 	}
 

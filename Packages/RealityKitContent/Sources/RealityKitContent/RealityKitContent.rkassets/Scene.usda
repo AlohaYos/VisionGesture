@@ -16,16 +16,6 @@ def Xform "Root" (
     float3 xformOp:translate = (0, 0, 0)
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
 
-    def "_PlainMaterial" (
-        active = true
-        prepend references = @_PlainMaterial.usda@
-    )
-    {
-        float3 xformOp:scale = (1, 1, 1)
-        float3 xformOp:translate = (0, 0.015, -0.01)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
-    }
-
     def RealityKitComponent "VFXEmitter"
     {
         uniform token info:id = "RealityKit.VFXEmitter"
