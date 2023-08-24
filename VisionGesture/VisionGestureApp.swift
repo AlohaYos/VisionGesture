@@ -18,7 +18,7 @@ struct VisionGestureApp: App {
 		
 		ImmersiveSpace(id: "ImmersiveSpace") {
 			ImmersiveView()
-		}.immersionStyle(selection: .constant(.full), in: .full)
+		}.immersionStyle(selection: .constant(.full), in: .automatic)	// .automaticにすれば、デジタルクラウンでイマーシブ度を調整できる
 	}
 	
 }

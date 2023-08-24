@@ -74,9 +74,11 @@ class VisionGestureProvider: NSObject {
 				break
 			}
 			
-			for processor in gestureProcessors {
-				//TODO: ここにジェスチャー判定を入れる
-				processor.processHandPoseObservations(observations: [latestHandTracking.right, latestHandTracking.left])
+			if latestHandTracking.right != nil && latestHandTracking.left != nil {
+				for processor in gestureProcessors {
+					//TODO: ここにジェスチャー判定を入れる
+					processor.processHandPoseObservations(observations: [latestHandTracking.right, latestHandTracking.left])
+				}
 			}
 		}
 	}

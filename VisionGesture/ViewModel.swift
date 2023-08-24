@@ -4,6 +4,7 @@ import Observation
 import RealityKitContent
 import Foundation
 import ARKit
+import SceneKit
 
 @Observable
 class ViewModel {
@@ -53,6 +54,8 @@ class ViewModel {
 		littleTip?.scale = [0.1, 0.1, 0.1]
 	}
 	func addPoint(_ point: SIMD3<Scalar>) {
+		return
+		
 		guard let b = ball else { return }
 		let ent = b.clone(recursive: true)
 		ent.scale = [0.05, 0.05, 0.05]
@@ -73,7 +76,6 @@ class ViewModel {
 		contentEntity.addChild(ent)
 	}
 	
-	
 	func setGloveEntiry(ent: Entity?) {
 		glove = ent
 		glove?.scale = [0.0, 0.0, 0.0]
@@ -81,7 +83,23 @@ class ViewModel {
 	}
 
 	func moveGlove(_ mtx4: simd_float4x4) {
-		glove?.transform = Transform(matrix: mtx4)
+		let deltaX: Float = 0.0
+		let deltaY: Float = -45.0
+		let deltaZ: Float = -45.0
+		var rotateMat: SCNMatrix4
+		var rotateSimd: simd_float4x4
+		// 以下、回転順序を考慮すること
+		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaY), 0, 1, 0)	// Y軸を中心とした回転
+		rotateSimd = matrix_float4x4(rotateMat)
+		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaX), 1, 0, 0)	// X軸を中心とした回転
+		rotateSimd = matrix_float4x4(rotateMat)
+		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaX), 0, 0, 1)	// X軸を中心とした回転
+		rotateSimd = matrix_float4x4(rotateMat)
+
+		let mtxOut = mtx4 * rotateSimd
+
+		glove?.transform = Transform(matrix: mtxOut)
+//		glove?.transform = Transform(matrix: mtx4)
 		glove?.scale = [0.5, 0.5, 0.5]
 	}
 	

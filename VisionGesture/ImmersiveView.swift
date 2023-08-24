@@ -106,6 +106,28 @@ struct ImmersiveView: View {
 					.font(.system(size: 32))
 					.tag("kuma_label")
 			}
+			/*
+			.gesture(
+				SpatialEventGesture(action: { events in })
+					.targetedToAnyEntity()
+					.targetedToEntity(kuma)
+					.onEnded({ value in	// action: (EntityTargetValue<EntityTargetValue<SpatialEventGesture.Value>>) -> Void
+
+					})
+//					.onChanged{ value in
+//						textLog("SpatialTapGesture.onChanged")
+//						value.entity.position = value.convert(value.location3D, from: .local, to: value.entity.parent!)
+//					}
+					.onEnded { value in
+						textLog("SpatialEventGesture.onEnded")
+//						value.gestureValue	// EntityTargetValue<SpatialEventGesture.Value>
+						let msg = value.entity.debugDescription
+						let pos = value.entity.position.debugDescription
+						textLog("  - \(msg)")
+						textLog("  - \(pos)")
+					}
+			)
+			*/
 			.gesture(
 				DragGesture()
 					.targetedToEntity(kuma)
@@ -180,26 +202,6 @@ struct ImmersiveView: View {
 			)
 			*/
 			.gesture(
-				SpatialEventGesture(action: { events in })
-					.targetedToAnyEntity()
-					.targetedToEntity(kuma)
-					.onEnded({ value in	// action: (EntityTargetValue<EntityTargetValue<SpatialEventGesture.Value>>) -> Void
-
-					})
-//					.onChanged{ value in
-//						textLog("SpatialTapGesture.onChanged")
-//						value.entity.position = value.convert(value.location3D, from: .local, to: value.entity.parent!)
-//					}
-					.onEnded { value in
-						textLog("SpatialEventGesture.onEnded")
-//						value.gestureValue	// EntityTargetValue<SpatialEventGesture.Value>
-						let msg = value.entity.debugDescription
-						let pos = value.entity.position.debugDescription
-						textLog("  - \(msg)")
-						textLog("  - \(pos)")
-					}
-			)
-			.gesture(
 				TapGesture().targetedToAnyEntity()
 					.targetedToEntity(kuma)
 					.onEnded { event in
@@ -245,10 +247,10 @@ struct ImmersiveView: View {
 			Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
 				let gesDum = Gesture_Aloha(delegate: self)
 				timerCount += 1
-				textLog("timer job : \(timerCount)")
+//				textLog("timer job : \(timerCount)")c
 // --- Sun
 				let xPos: Float = Float(timerCount) * 0.02 - 0.8
-				viewModel.addPoint(SIMD3(x: xPos, y: 1.5, z: -1))
+//				viewModel.addPoint(SIMD3(x: xPos, y: 1.5, z: -1))
 // --- Biplane
 				var delta = timerCount*10
 				var joint1 = SIMD3(x: xPos-0.25, y: 1.7, z: -1)	// 底辺左
@@ -326,8 +328,28 @@ extension ImmersiveView: VisionGestureDelegate {
 	}
 	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int) {
 		textLog("gestureFired at point")
+		var typeStr: String = ""
+		switch triggerType {
+		case Gesture_Cursor.CursorType.up.rawValue:
+			typeStr = "UP"
+		case Gesture_Cursor.CursorType.down.rawValue:
+			typeStr = "DOWN"
+		case Gesture_Cursor.CursorType.left.rawValue:
+			typeStr = "LEFT"
+		case Gesture_Cursor.CursorType.right.rawValue:
+			typeStr = "RIGHT"
+		case Gesture_Cursor.CursorType.fire.rawValue:
+			typeStr = "FIRE"
+		case Gesture_Cursor.CursorType.unknown.rawValue:
+//			typeStr = "UNKNOWN"
+			break
+		default:
+//			typeStr = "DEFAULT"
+			break
+		}
 		for point:CGPoint in atPoints {
-			textLog("    (\(point.x),\(point.y)")
+			textLog("    (\(point.x),\(point.y) : [\(typeStr)]")
+			break
 		}
 	}
 	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {

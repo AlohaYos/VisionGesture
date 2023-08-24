@@ -198,14 +198,14 @@ class VisionGestureProcessor {
 	let compareMultiply = 5.0
 	func isPointingUp(hand:WhichHand, finger:WhichFinger) -> Bool {
 		let vector = calcPointingXY(hand: hand, finger: finger)
-		if (vector.dy < 0) && (fabs(vector.dy) > fabs(vector.dx)*compareMultiply) {
+		if (vector.dy > 0) && (fabs(vector.dy) > fabs(vector.dx)*compareMultiply) {
 			return true
 		}
 		return false
 	}
 	func isPointingDown(hand:WhichHand, finger:WhichFinger) -> Bool {
 		let vector = calcPointingXY(hand: hand, finger: finger)
-		if (vector.dy > 0) && (fabs(vector.dy) > fabs(vector.dx)*compareMultiply) {
+		if (vector.dy < 0) && (fabs(vector.dy) > fabs(vector.dx)*compareMultiply) {
 			return true
 		}
 		return false
