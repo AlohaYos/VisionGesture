@@ -128,6 +128,65 @@ struct ImmersiveView: View {
 					}
 			)
 			*/
+
+			.gesture(SpatialEventGesture { events in
+				// https://developer.apple.com/documentation/swiftui/spatialeventgesture
+						for event in events {
+							// SpatialEventCollection.Event
+							// https://developer.apple.com/documentation/swiftui/spatialeventcollection
+							/*
+							 event.id
+							 event.kind
+							event.location
+							event.inputDevicePose
+							event.location3D
+							event.modifierKeys
+							event.selectionRay
+							event.targetedEntity
+							event.timestamp
+							*/
+
+							print("event.id : \(event.id.hashValue)")
+							print("event.kind : \(event.kind.hashValue)")
+							print("event.location : \(event.location.description)")
+							print("event.location3D : \(event.location3D.description)")
+							print("event.inputDevicePose : \(event.inputDevicePose.debugDescription)")
+//							print("event.modifierKeys : \(event.modifierKeys.debugDescription.description)")
+//							print("event.selectionRay : \(event.selectionRay.rawValue.description)")
+							print("event.targetedEntity : \(event.targetedEntity.debugDescription)")
+							print("event.targetedEntity.transform : \(event.targetedEntity?.transform.translation.debugDescription)")
+							print("event.timestamp : \(event.timestamp.debugDescription)")
+							
+//							event.id.hashValue
+//							event.kind.debugDescription.decomposedStringWithCompatibilityMapping
+//							event.location.description
+//							event.location3D.description
+//							event.inputDevicePose.debugDescription
+//							event.modifierKeys.debugDescription.description
+//							event.selectionRay.rawValue.description
+//							event.targetedEntity.debugDescription
+//							event.timestamp.debugDescription
+
+							let msg = event.location.debugDescription
+							switch event.phase {
+							case .active:
+								textLog("SpatialEventGesture.active")
+								textLog("  - \(msg)")
+								break
+							case .ended:
+								textLog("SpatialEventGesture.ended")
+								textLog("  - \(msg)")
+								break
+							case .cancelled:
+								textLog("SpatialEventGesture.cancelled")
+								textLog("  - \(msg)")
+								break
+							default:
+								break
+							}
+						}
+					}
+			)
 			.gesture(
 				DragGesture()
 					.targetedToEntity(kuma)
@@ -163,45 +222,8 @@ struct ImmersiveView: View {
 						textLog("  - \(msg)")
 					}
 				)
-			/*
-			.gesture(SpatialEventGesture { events in
-				// https://developer.apple.com/documentation/swiftui/spatialeventgesture
-						for event in events {
-							// SpatialEventCollection.Event
-							// https://developer.apple.com/documentation/swiftui/spatialeventcollection
-							/*
-							event.location
-							event.id
-							event.kind
-							event.inputDevicePose
-							event.location3D
-							event.modifierKeys
-							event.selectionRay
-							event.targetedEntity
-							event.timestamp
-							*/
-							let msg = event.location.debugDescription
-							switch event.phase {
-							case .active:
-								textLog("SpatialEventGesture.active")
-								textLog("  - \(msg)")
-								break
-							case .ended:
-								textLog("SpatialEventGesture.ended")
-								textLog("  - \(msg)")
-								break
-							case .cancelled:
-								textLog("SpatialEventGesture.cancelled")
-								textLog("  - \(msg)")
-								break
-							default:
-								break
-							}
-						}
-					}
-			)
-			*/
-			.gesture(
+
+			 .gesture(
 				TapGesture().targetedToAnyEntity()
 					.targetedToEntity(kuma)
 					.onEnded { event in
