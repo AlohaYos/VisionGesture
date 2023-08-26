@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FF02DF5F2A99C223006F4348 /* HandModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF02DF5E2A99C223006F4348 /* HandModel.swift */; };
 		FF07F8A02A947CE800AED8AD /* kuma.usdz in Resources */ = {isa = PBXBuildFile; fileRef = FF07F89F2A947CE800AED8AD /* kuma.usdz */; };
 		FFB8EC782A91785600A79CE5 /* Gesture_Aloha.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFB8EC772A91785600A79CE5 /* Gesture_Aloha.swift */; };
 		FFC256452A90D12B00E49FB1 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC256442A90D12B00E49FB1 /* ViewModel.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FF02DF5E2A99C223006F4348 /* HandModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandModel.swift; sourceTree = "<group>"; };
 		FF07F89F2A947CE800AED8AD /* kuma.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = kuma.usdz; sourceTree = "<group>"; };
 		FFB8EC772A91785600A79CE5 /* Gesture_Aloha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture_Aloha.swift; sourceTree = "<group>"; };
 		FFC256442A90D12B00E49FB1 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				FFD2205A2A8C73A70036AFCC /* VisionGestureProcessor.swift */,
 				FFD220592A8C73A40036AFCC /* VisionGestureProvider.swift */,
 				FFC256442A90D12B00E49FB1 /* ViewModel.swift */,
+				FF02DF5E2A99C223006F4348 /* HandModel.swift */,
 				FF07F89F2A947CE800AED8AD /* kuma.usdz */,
 				FFD2204C2A8C72DF0036AFCC /* ImageBasedLighting.skybox */,
 				FFD2204E2A8C72E10036AFCC /* Assets.xcassets */,
@@ -205,6 +208,7 @@
 			files = (
 				FFD220642A8C740B0036AFCC /* CGAffineTransform.swift in Sources */,
 				FFD220682A8C740B0036AFCC /* CGRect.swift in Sources */,
+				FF02DF5F2A99C223006F4348 /* HandModel.swift in Sources */,
 				FFD2205D2A8C73A70036AFCC /* VisionGestureProcessor.swift in Sources */,
 				FFD220492A8C72DF0036AFCC /* ContentView.swift in Sources */,
 				FFD2205B2A8C73A70036AFCC /* Gesture_Cursor.swift in Sources */,

@@ -18,11 +18,14 @@ typealias Scalar = Float
 
 var timerCount = 0
 var timerCountQuick = 0
+var gesture_Aloha: Gesture_Aloha?
+var gesture_Cursor: Gesture_Cursor?
 
 struct ImmersiveView: View {
 	@State var logText: String = "Ready..."
 	var gestureProvider = VisionGestureProvider()
 	var viewModel: ViewModel = ViewModel()
+	var handModel: HandModel = HandModel()
 	@State var kuma: Entity = Entity()
 	@State var rotationA: Angle = .zero
 
@@ -31,6 +34,7 @@ struct ImmersiveView: View {
 	}
 	var body: some View {
 		ZStack {
+			// パーティクル
 			RealityView { content in
 				if let scene = try? await Entity(named: "Scene", in: realityKitContentBundle) {	// パーティクル
 //					scene.scale = [0.15, 0.15, 0.15]
@@ -38,6 +42,7 @@ struct ImmersiveView: View {
 					content.add(scene)
 				}
 			}
+			// TextLogコンソール
 			RealityView { content, attachments in
 				let ent = Entity()
 				ent.scale = [4.0, 4.0, 4.0]
@@ -66,7 +71,7 @@ struct ImmersiveView: View {
 						textLog("DragGesture.onEnded")
 					}
 				)
-
+			// クマ以外の物体
 			RealityView { content in
 				do {
 					let earth = try await Entity(named: "Sun", in: realityKitContentBundle)
@@ -81,9 +86,10 @@ struct ImmersiveView: View {
 					viewModel.setGloveEntiry(ent: glove)
 				}
 				catch { return }
-				content.add(viewModel.setupContentEntity())
-//				viewModel.clearText()
+				content.add(viewModel.setupContentEntity())	// 物体
+				content.add(handModel.setupContentEntity())	// ハンドトラッキングも描画する
 			}
+			// クマ
 			RealityView { content, attachments in
 				do {
 					kuma = try await Entity(named: "kuma", in: realityKitContentBundle)
@@ -189,8 +195,9 @@ struct ImmersiveView: View {
 					}
 			)
 				//.rotation3DEffect(Angle(degrees: Double(timerCount)), axis: (x: 0, y: 1, z: 0))
+			// ↑ クマ：ここまで
 
-		}
+		}	// ZStack
 		.onAppear {
 			textLog("onAppear")
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -202,7 +209,9 @@ struct ImmersiveView: View {
 		}
 		.task {
 			textLog("gestureProvider.appendGesture")
-			gestureProvider.appendGesture(Gesture_Aloha(delegate: self))
+			gesture_Aloha = Gesture_Aloha(delegate: self)
+			gestureProvider.appendGesture(gesture_Aloha!)
+//			gesture_Cursor = Gesture_Cursor(delegate: self)
 //			gestureProvider.appendGesture(Gesture_Cursor(delegate: self))
 			textLog("gestureProvider.start")
 			await gestureProvider.start()
@@ -219,6 +228,7 @@ struct ImmersiveView: View {
 			Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
 				timerCountQuick += 1
 				rotate_kuma()
+				displayHandJoints()
 			}
 		}
 		.task {
@@ -238,7 +248,7 @@ struct ImmersiveView: View {
 				var rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(delta), 0, 0, 1)	// z軸を中心とした10度回転
 				var rotateSimd = matrix_float4x4(rotateMat)
 				var mtxOut = mtx! * rotateSimd
-				viewModel.addPoint4(mtxOut)
+				viewModel.addPoint4(mtxOut)	// 飛行機を追加描画
 // --- Glove
 				delta = timerCount*5
 				joint1 = SIMD3(x: xPos-0.25, y: 1.2, z: -1)	// 底辺左
@@ -248,7 +258,7 @@ struct ImmersiveView: View {
 				rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(delta), 0, 1, 0)	// Y軸を中心とした10度回転
 				rotateSimd = matrix_float4x4(rotateMat)
 				mtxOut = mtx! * rotateSimd
-				viewModel.moveGlove(mtxOut)
+				viewModel.moveGlove(mtxOut)	// グローブ移動
 // --- finger tips
 				delta = timerCount*5
 				joint1 = SIMD3(x: xPos-0.05, y: 1.20, z: -1)	// 親指
@@ -259,12 +269,13 @@ struct ImmersiveView: View {
 				rotateSimd = matrix_float4x4(rotateMat)
 				mtxOut = mtx! * rotateSimd
 				viewModel.setPoints([
-					joint1, joint2, joint3
+					joint1, joint2, joint3	// 3点を移動
 				])
 			}
 		}
 	}
 	
+	// クマの回転
 	func rotate_kuma() {
 		rotationA.degrees += 5.0
 		let m1 = Transform(roll: Float(0.0)).matrix
@@ -279,13 +290,21 @@ struct ImmersiveView: View {
 			viewModel.addPoint(p)
 		}
 	}
+	// Alohaの指先
 	func set_points(pos: [SIMD3<Scalar>?]) {
 		viewModel.setPoints(pos)
 	}
+	// 未使用
 	func add_point4(pos: simd_float4x4?) {
 		if let p = pos {
 			viewModel.addPoint4(p)
 		}
+	}
+	// ハンドトラッキングの表示
+	func displayHandJoints() {
+		handModel.setHandJoints(left : gesture_Aloha?.handJoint(RorL: VisionGestureProcessor.WhichHand.left),
+								right: gesture_Aloha?.handJoint(RorL: VisionGestureProcessor.WhichHand.right))
+		handModel.showFingers()
 	}
 }
 

@@ -150,8 +150,14 @@ class VisionGestureProcessor {
 		state = .unknown
 	}
 
+	// MARK: Export joint positions
+	func handJoint(RorL: WhichHand) -> [[SIMD3<Scalar>?]] {
+		guard handJoints != nil, handJoints.count-1 >= RorL.rawValue else { return [] }
+		return handJoints[RorL.rawValue]
+	}
+
 	// MARK: Compare joint positions
-	
+
 	func cv2(_ pos: SIMD3<Scalar>?) -> CGPoint? {
 		guard let p = pos else { return CGPointZero }
 		return CGPointMake(CGFloat(p.x),CGFloat(p.y))
