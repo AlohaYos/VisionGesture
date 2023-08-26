@@ -66,26 +66,10 @@ class VisionGestureDelegateEvent {
 
 protocol VisionGestureDelegate {
 	func gesture(gesture: VisionGestureProcessor, event: VisionGestureDelegateEvent);
-//	func gestureBegan(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
-//	func gestureMoved(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
-//	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int);
-//	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
-//	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
-//	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>);
-//	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4);
-//	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]);
 }
 
 extension VisionGestureDelegate {
 	func gesture(gesture: VisionGestureProcessor, event: VisionGestureDelegateEvent) {}
-//	func gestureBegan(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
-//	func gestureMoved(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
-//	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int) {}
-//	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
-//	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
-//	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>) {}
-//	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4) {}
-//	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]) {}
 }
 
 // MARK: VisionGestureProcessor (Base class of any Gesture)
@@ -497,29 +481,6 @@ class VisionGestureProcessor {
 			SIMD4(ct.x, ct.y, ct.z, 1)
 		)
 		return triangleCenterWorldTransform
-
-		/*
-		// Compute a position in the middle of the heart gesture.
-		let halfway = (rightHandIndexFingerTipWorldPosition - leftHandThumbTipWorldPosition) / 2
-		let heartMidpoint = rightHandIndexFingerTipWorldPosition - halfway
-		
-		// Compute the vector from left thumb knuckle to right thumb knuckle and normalize (X axis).
-		let xAxis = normalize(rightHandThumbKnuckleWorldPosition - leftHandThumbKnuckleWorldPosition)
-		
-		// Compute the vector from right thumb tip to right index finger tip and normalize (Y axis).
-		let yAxis = normalize(rightHandIndexFingerTipWorldPosition - rightHandThumbTipWorldPosition)
-		
-		let zAxis = normalize(cross(xAxis, yAxis))
-		
-		// Create the final transform for the heart gesture from the three axes and midpoint vector.
-		let heartMidpointWorldTransform = simd_matrix(
-			SIMD4(xAxis.x, xAxis.y, xAxis.z, 0),
-			SIMD4(yAxis.x, yAxis.y, yAxis.z, 0),
-			SIMD4(zAxis.x, zAxis.y, zAxis.z, 0),
-			SIMD4(heartMidpoint.x, heartMidpoint.y, heartMidpoint.z, 1)
-		)
-		return heartMidpointWorldTransform
-		*/
 	}
 }
 
