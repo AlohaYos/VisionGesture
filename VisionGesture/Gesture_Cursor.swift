@@ -53,22 +53,22 @@ class Gesture_Cursor: VisionGestureProcessor
 		
 		switch pose {
 		case .up:
-			delegate?.gestureFired(gesture: self, atPoints: [CGPointZero], triggerType: CursorType.up.rawValue)
+			delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Fired, trigger: CursorType.up.rawValue))
 			break
 		case .down:
-			delegate?.gestureFired(gesture: self, atPoints: [CGPointZero], triggerType: CursorType.down.rawValue)
+			delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Fired, trigger: CursorType.down.rawValue))
 			break
 		case .right:
-			delegate?.gestureFired(gesture: self, atPoints: [CGPointZero], triggerType: CursorType.right.rawValue)
+			delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Fired, trigger: CursorType.right.rawValue))
 			break
 		case .left:
-			delegate?.gestureFired(gesture: self, atPoints: [CGPointZero], triggerType: CursorType.left.rawValue)
+			delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Fired, trigger: CursorType.left.rawValue))
 			break
 		case .fire:
-			delegate?.gestureFired(gesture: self, atPoints: [CGPointZero], triggerType: CursorType.fire.rawValue)
+			delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Fired, trigger: CursorType.fire.rawValue))
 			break
 		case .unknown:
-			delegate?.gestureFired(gesture: self, atPoints: [CGPointZero], triggerType: pose.rawValue)
+			delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Fired, trigger: pose.rawValue))
 			break
 		}
 		Holder.lastPose = pose

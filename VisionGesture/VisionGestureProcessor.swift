@@ -6,7 +6,6 @@
 //
 import Foundation
 import CoreGraphics
-//import UIKit
 import SwiftUI
 import Vision
 #if targetEnvironment(simulator)
@@ -15,30 +14,78 @@ import ARKit
 @preconcurrency import ARKit
 #endif
 
-typealias Scalar = Float
-
 // MARK: VisionGestureDelegate (gesture callback)
 
+class VisionGestureDelegateEvent {
+	enum EventType: Int {
+		case unknown = 0
+		case Began
+		case Moved2D
+		case Moved3D
+		case Moved4D
+		case Ended
+		case Canceled
+		case Fired
+	}
+	
+	static var uniqueID: Int = 1
+	var id: Int
+	var timestamp: TimeInterval
+	var type: EventType
+	var triggerType: Int
+	var location: [Any]
+	
+	init() {
+		self.id = VisionGestureDelegateEvent.uniqueID
+		self.timestamp  = NSDate().timeIntervalSince1970
+		self.type = .unknown
+		self.triggerType = -1
+		self.location = []
+		VisionGestureDelegateEvent.uniqueID += 1
+	}
+
+	init(type: EventType, location: [Any]) {
+		self.id = VisionGestureDelegateEvent.uniqueID
+		self.timestamp  = NSDate().timeIntervalSince1970
+		self.type = type
+		self.triggerType = -1
+		self.location = location as [Any]
+		VisionGestureDelegateEvent.uniqueID += 1
+	}
+	
+	init(type: EventType, trigger: Int) {
+		self.id = VisionGestureDelegateEvent.uniqueID
+		self.timestamp  = NSDate().timeIntervalSince1970
+		self.type = type
+		self.triggerType = trigger
+		self.location = []
+		VisionGestureDelegateEvent.uniqueID += 1
+	}
+	
+}
+
 protocol VisionGestureDelegate {
-	func gestureBegan(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
-	func gestureMoved(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
-	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int);
-	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
-	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
-	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>);
-	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4);
-	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]);
+	func gesture(gesture: VisionGestureProcessor, event: VisionGestureDelegateEvent);
+//	func gestureBegan(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
+//	func gestureMoved(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
+//	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int);
+//	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
+//	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]);
+//	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>);
+//	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4);
+//	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]);
 }
 
 extension VisionGestureDelegate {
-	func gestureBegan(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
-	func gestureMoved(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
-	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int) {}
-	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
-	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
-	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>) {}
-	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4) {}
-	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]) {}
+	func gesture(gesture: VisionGestureProcessor, event: VisionGestureDelegateEvent) {}
+//	func gestureBegan(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
+//	func gestureMoved(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
+//	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int) {}
+//	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
+//	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {}
+//	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>) {}
+//	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4) {}
+//	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]) {}
 }
 
 // MARK: VisionGestureProcessor (Base class of any Gesture)

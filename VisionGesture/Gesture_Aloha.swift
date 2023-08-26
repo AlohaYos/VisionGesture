@@ -33,19 +33,21 @@ class Gesture_Aloha: VisionGestureProcessor
         switch state {
         case .unknown:			// initial state
             if(isShakaPose()) {		// wait for first pose (thumb and little finger outstretched, other fingers bending)
-				delegate?.gestureBegan(gesture: self, atPoints: [CGPointZero])
+				delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Began, location: [CGPointZero]))
                 state = State.waitForRelease
             }
             break
         case .waitForRelease:	// wait for pose release
-			delegate?.gestureMoved(gesture: self, atPoints: shakaTips())
+//			delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Moved, location: shakaTips()))
 
 			// 指先のプロット
-			delegate?.gesturePlotSIMD3s(gesture: self, atPoints:[
-				jointPosition(hand:.right, finger:.thumb,  joint: .tip)!,
-				jointPosition(hand:.right, finger:.little,  joint: .tip)!,
-				jointPosition(hand:.right, finger:.wrist, joint: .tip)!
-			])
+			delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Moved3D, location:
+				[
+					jointPosition(hand:.right, finger:.thumb,  joint: .tip) as Any,
+					jointPosition(hand:.right, finger:.little,  joint: .tip) as Any,
+					jointPosition(hand:.right, finger:.wrist, joint: .tip) as Any
+				]
+			  ))
 
 			// ジェスチャーの中心位置
 			let pos: SIMD3<Scalar>? = triangleCenter(
@@ -53,7 +55,7 @@ class Gesture_Aloha: VisionGestureProcessor
 				joint2:jointPosition(hand:.right, finger:.little, joint: .tip),
 				joint3:jointPosition(hand:.right, finger:.wrist,  joint: .tip))
 			if let p = pos {
-				delegate?.gesturePlotSIMD3(gesture: self, atPoints: p)
+				delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Moved3D, location:[p as Any]))
 			}
 			// ジェスチャーの中心ベクトル
 			let pos4: simd_float4x4? = triangleCenterWithAxis(
@@ -61,11 +63,11 @@ class Gesture_Aloha: VisionGestureProcessor
 				joint2:jointPosition(hand:.right, finger:.little, joint: .tip),
 				joint3:jointPosition(hand:.right, finger:.wrist, joint: .tip))
 			if let p = pos4 {
-				delegate?.gesturePlotSIMD4(gesture: self, atPoints: p)
+				delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Moved4D, location:[p as Any]))
 			}
 			
             if(!isShakaPose()) {	// wait until pose released
-				delegate?.gestureEnded(gesture: self, atPoints: [CGPointZero])
+				delegate?.gesture(gesture: self, event: VisionGestureDelegateEvent(type: .Ended, location: [CGPointZero]))
                 state = State.unknown
             }
             break

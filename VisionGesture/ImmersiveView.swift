@@ -14,6 +14,8 @@ import RealityKit
 import RealityKitContent
 import SceneKit
 
+typealias Scalar = Float
+
 var timerCount = 0
 var timerCountQuick = 0
 
@@ -76,7 +78,6 @@ struct ImmersiveView: View {
 					let triangle = try await Entity(named: "Triangle", in: realityKitContentBundle)
 					viewModel.setTriangleEntiry(ent: triangle)//
 					let glove = try await Entity(named: "RubberGlove", in: realityKitContentBundle)
-//					let glove = try await Entity(named: "RubberGlove", in: realityKitContentBundle)
 					viewModel.setGloveEntiry(ent: glove)
 				}
 				catch { return }
@@ -106,46 +107,11 @@ struct ImmersiveView: View {
 					.font(.system(size: 32))
 					.tag("kuma_label")
 			}
-			/*
-			.gesture(
-				SpatialEventGesture(action: { events in })
-					.targetedToAnyEntity()
-					.targetedToEntity(kuma)
-					.onEnded({ value in	// action: (EntityTargetValue<EntityTargetValue<SpatialEventGesture.Value>>) -> Void
-
-					})
-//					.onChanged{ value in
-//						textLog("SpatialTapGesture.onChanged")
-//						value.entity.position = value.convert(value.location3D, from: .local, to: value.entity.parent!)
-//					}
-					.onEnded { value in
-						textLog("SpatialEventGesture.onEnded")
-//						value.gestureValue	// EntityTargetValue<SpatialEventGesture.Value>
-						let msg = value.entity.debugDescription
-						let pos = value.entity.position.debugDescription
-						textLog("  - \(msg)")
-						textLog("  - \(pos)")
-					}
-			)
-			*/
-
 			.gesture(SpatialEventGesture { events in
 				// https://developer.apple.com/documentation/swiftui/spatialeventgesture
 						for event in events {
 							// SpatialEventCollection.Event
 							// https://developer.apple.com/documentation/swiftui/spatialeventcollection
-							/*
-							 event.id
-							 event.kind
-							event.location
-							event.inputDevicePose
-							event.location3D
-							event.modifierKeys
-							event.selectionRay
-							event.targetedEntity
-							event.timestamp
-							*/
-
 							print("event.id : \(event.id.hashValue)")
 							print("event.kind : \(event.kind.hashValue)")
 							print("event.location : \(event.location.description)")
@@ -156,16 +122,6 @@ struct ImmersiveView: View {
 							print("event.targetedEntity : \(event.targetedEntity.debugDescription)")
 							print("event.targetedEntity.transform : \(event.targetedEntity?.transform.translation.debugDescription)")
 							print("event.timestamp : \(event.timestamp.debugDescription)")
-							
-//							event.id.hashValue
-//							event.kind.debugDescription.decomposedStringWithCompatibilityMapping
-//							event.location.description
-//							event.location3D.description
-//							event.inputDevicePose.debugDescription
-//							event.modifierKeys.debugDescription.description
-//							event.selectionRay.rawValue.description
-//							event.targetedEntity.debugDescription
-//							event.timestamp.debugDescription
 
 							let msg = event.location.debugDescription
 							switch event.phase {
@@ -336,75 +292,88 @@ struct ImmersiveView: View {
 // MARK: VisionGestureDelegate job
 
 extension ImmersiveView: VisionGestureDelegate {
-	func gestureBegan(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {
-		textLog("gestureBegan at point")
-		for point:CGPoint in atPoints {
-			textLog("    (\(point.x),\(point.y)")
+	
+	typealias Scalar = Float
+
+	func gesture(gesture: VisionGestureProcessor, event: VisionGestureDelegateEvent) {
+		if gesture is Gesture_Aloha {
+			handle_gestureAloha(event: event)
 		}
 	}
-	func gestureMoved(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {
-		textLog("gestureMoved at point")
-		for point:CGPoint in atPoints {
-			textLog("    (\(point.x),\(point.y)")
-		}
-	}
-	func gestureFired(gesture: VisionGestureProcessor, atPoints:[CGPoint], triggerType: Int) {
-		textLog("gestureFired at point")
-		var typeStr: String = ""
-		switch triggerType {
-		case Gesture_Cursor.CursorType.up.rawValue:
-			typeStr = "UP"
-		case Gesture_Cursor.CursorType.down.rawValue:
-			typeStr = "DOWN"
-		case Gesture_Cursor.CursorType.left.rawValue:
-			typeStr = "LEFT"
-		case Gesture_Cursor.CursorType.right.rawValue:
-			typeStr = "RIGHT"
-		case Gesture_Cursor.CursorType.fire.rawValue:
-			typeStr = "FIRE"
-		case Gesture_Cursor.CursorType.unknown.rawValue:
-//			typeStr = "UNKNOWN"
+	
+	// Aloha
+	func handle_gestureAloha(event: VisionGestureDelegateEvent) {
+		switch event.type {
+		case .Moved2D:
+			textLog("Aloha: gesture 2D")
+			if let pnt = event.location[0] as? SIMD3<Scalar> {
+				add_point(pos: pnt)
+			}
+		case .Moved3D:
+			textLog("Aloha: gesture 3D")
+			set_points(pos: event.location as! [SIMD3<Scalar>])
+		case .Moved4D:
+			textLog("Aloha: gesture 4D")
+			if let pnt = event.location[0] as? simd_float4x4 {
+				viewModel.moveGlove(pnt)
+			}
+		case .Began:
+			textLog("Aloha: gesture began")
+		case .Ended:
+			textLog("Aloha: gesture ended")
+		case .Canceled:
+			textLog("Aloha: gesture canceled")
+		case .Fired:
+			textLog("Aloha: gesture fired")
 			break
 		default:
-//			typeStr = "DEFAULT"
-			break
-		}
-		for point:CGPoint in atPoints {
-			textLog("    (\(point.x),\(point.y) : [\(typeStr)]")
 			break
 		}
 	}
-	func gestureEnded(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {
-		textLog("gestureEnded at point")
-		for point:CGPoint in atPoints {
-			textLog("    (\(point.x),\(point.y)")
+	
+	// Cursor
+	func handle_gestureCursor(event: VisionGestureDelegateEvent) {
+		switch event.type {
+		case .Moved2D:
+			textLog("Cursor: gesture 2D")
+		case .Moved3D:
+			textLog("Cursor: gesture 3D")
+		case .Moved4D:
+			textLog("Cursor: gesture 4D")
+		case .Began:
+			textLog("Cursor: gesture began")
+		case .Ended:
+			textLog("Cursor: gesture ended")
+		case .Canceled:
+			textLog("Cursor: gesture canceled")
+		case .Fired:
+			textLog("Cursor: gesture fired")
+			var typeStr: String = ""
+			switch event.triggerType {
+			case Gesture_Cursor.CursorType.up.rawValue:
+				typeStr = "UP"
+			case Gesture_Cursor.CursorType.down.rawValue:
+				typeStr = "DOWN"
+			case Gesture_Cursor.CursorType.left.rawValue:
+				typeStr = "LEFT"
+			case Gesture_Cursor.CursorType.right.rawValue:
+				typeStr = "RIGHT"
+			case Gesture_Cursor.CursorType.fire.rawValue:
+				typeStr = "FIRE"
+			case Gesture_Cursor.CursorType.unknown.rawValue:
+				typeStr = "UNKNOWN"
+				break
+			default:
+				typeStr = "DEFAULT"
+				break
+			}
+			textLog("    [\(typeStr)]")
+			break
+		default:
+			break
 		}
 	}
-	func gestureCanceled(gesture: VisionGestureProcessor, atPoints:[CGPoint]) {
-		textLog("gestureCanceled at point")
-		for point:CGPoint in atPoints {
-			textLog("    (\(point.x),\(point.y)")
-		}
-	}
-	func gesturePlotSIMD3(gesture: VisionGestureProcessor, atPoints:SIMD3<Scalar>) {
-		textLog("gesturePlot3")
-		if gesture is Gesture_Aloha {
-			add_point(pos: atPoints)
-		}
-	}
-	func gesturePlotSIMD3s(gesture: VisionGestureProcessor, atPoints:[SIMD3<Scalar>]) {
-		textLog("gesturePlot3s")
-		if gesture is Gesture_Aloha {
-			set_points(pos: atPoints)
-		}
-	}
-	func gesturePlotSIMD4(gesture: VisionGestureProcessor, atPoints:simd_float4x4) {
-		textLog("gesturePlot4")
-		if gesture is Gesture_Aloha {
-			viewModel.moveGlove(atPoints)
-		}
-	}
-
+	
 }
 
 // MARK: Other job
