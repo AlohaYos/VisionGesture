@@ -276,18 +276,37 @@ class VisionGestureProcessor {
 		var fingerJoints2 = [[SIMD3<Scalar>?]]()
 		//var fingerPath = CGMutablePath()
 		
+		var handCount = 0
+		
 		do {
-			if observations.count>0 {
-				fingerJoints1 = try getFingerJoints(with: observations[0]!)
-				//fingerPath.addPath(drawFingers(fingerJoints: fingerJoints1))
+			if enableHandTrackFake {
+				let htf = HandTrackFake()
+				if let handTrackJson = htf.groupData(key: htf.handTrackDataKey) {
+					if let dt3D = HandTrackJson3D(jsonStr: handTrackJson) {
+						handCount = dt3D.handJoints.count
+						if handCount>0 {
+							fingerJoints1 = dt3D.handJoints[0]
+						}
+						if handCount>1 {
+							fingerJoints1 = dt3D.handJoints[1]
+						}
+					}
+				}
 			}
-			if observations.count>1 {
-				fingerJoints2 = try getFingerJoints(with: observations[1]!)
-				//fingerPath.addPath(drawFingers(fingerJoints: fingerJoints2))
+			else {
+				handCount = observations.count
+				if handCount>0 {
+					fingerJoints1 = try getFingerJoints(with: observations[0]!)
+					//fingerPath.addPath(drawFingers(fingerJoints: fingerJoints1))
+				}
+				if handCount>1 {
+					fingerJoints2 = try getFingerJoints(with: observations[1]!)
+					//fingerPath.addPath(drawFingers(fingerJoints: fingerJoints2))
+				}
 			}
 
 			// decide which hand is right/left
-			switch observations.count {
+			switch handCount {
 			case 1:
 				handJoints.removeAll()
 				handJoints.insert(fingerJoints1, at: defaultHand.rawValue)

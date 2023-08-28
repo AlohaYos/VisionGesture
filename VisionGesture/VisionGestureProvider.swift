@@ -54,27 +54,38 @@ class VisionGestureProvider: NSObject {
 	}
 	
 	func publishHandTrackingUpdates() async {
-		for await update in handTracking.anchorUpdates {
-			switch update.event {
-			case .updated:
-				let anchor = update.anchor
-				guard anchor.isTracked else { continue }
-				
-				if anchor.chirality == .left {
-					// Update left hand info.
-					latestHandTracking.left = anchor
-				} else if anchor.chirality == .right {
-					// Update right hand info.
-					latestHandTracking.right = anchor
+		if enableHandTrackFake {
+			DispatchQueue.main.async {
+				Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
+					for processor in self.gestureProcessors {
+						processor.processHandPoseObservations(observations: [])
+					}
 				}
-			default:
-				break
 			}
-			
-			if latestHandTracking.right != nil && latestHandTracking.left != nil {
-				for processor in gestureProcessors {
-					// ジェスチャー判定
-					processor.processHandPoseObservations(observations: [latestHandTracking.right, latestHandTracking.left])
+		}
+		else {
+			for await update in handTracking.anchorUpdates {
+				switch update.event {
+				case .updated:
+					let anchor = update.anchor
+					guard anchor.isTracked else { continue }
+					
+					if anchor.chirality == .left {
+						// Update left hand info.
+						latestHandTracking.left = anchor
+					} else if anchor.chirality == .right {
+						// Update right hand info.
+						latestHandTracking.right = anchor
+					}
+				default:
+					break
+				}
+				
+				if latestHandTracking.right != nil && latestHandTracking.left != nil {
+					for processor in gestureProcessors {
+						// ジェスチャー判定
+						processor.processHandPoseObservations(observations: [latestHandTracking.right, latestHandTracking.left])
+					}
 				}
 			}
 		}
