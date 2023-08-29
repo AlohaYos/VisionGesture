@@ -89,6 +89,8 @@ struct HandTrackJson2D: Codable {
 		var jsonString = ""
 		let encoder = JSONEncoder()
 		
+		if handJoints.count == 0 { return jsonString }
+		
 		do {
 			let jsonData = try encoder.encode(convertFake(handJoints))
 //			let jsonData = try encoder.encode(handJoints)
