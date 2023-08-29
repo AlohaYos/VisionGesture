@@ -20,8 +20,13 @@ class ViewModel {
 
     private var contentEntity = Entity()
 
+	func setupContentEntity() -> Entity {
+		return contentEntity
+	}
+
 	func setBallEntiry(ent: Entity?) {
 		ball = ent
+		setupJointBalls()
 	}
 	func setEarthEntiry(ent: Entity?) {
 		thumbTip = ent
@@ -38,10 +43,6 @@ class ViewModel {
 		triangle = ent
 	}
 
-    func setupContentEntity() -> Entity {
-        return contentEntity
-    }
-
 	func setPoints(_ point: [SIMD3<Scalar>?]) {
 		guard let b = thumbTip else { return }
 		guard let thumbPos = point[0], let littlePos = point[1], let wristPos = point[2] else { return }
@@ -54,8 +55,6 @@ class ViewModel {
 		littleTip?.scale = [0.1, 0.1, 0.1]
 	}
 	func addPoint(_ point: SIMD3<Scalar>) {
-		return
-		
 		guard let b = ball else { return }
 		let ent = b.clone(recursive: true)
 		ent.scale = [0.05, 0.05, 0.05]
@@ -83,23 +82,24 @@ class ViewModel {
 	}
 
 	func moveGlove(_ mtx4: simd_float4x4) {
-		let deltaX: Float = 0.0
-		let deltaY: Float = -45.0
-		let deltaZ: Float = -45.0
-		var rotateMat: SCNMatrix4
-		var rotateSimd: simd_float4x4
-		// 以下、回転順序を考慮すること
-		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaY), 0, 1, 0)	// Y軸を中心とした回転
-		rotateSimd = matrix_float4x4(rotateMat)
-		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaX), 1, 0, 0)	// X軸を中心とした回転
-		rotateSimd = matrix_float4x4(rotateMat)
-		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaX), 0, 0, 1)	// X軸を中心とした回転
-		rotateSimd = matrix_float4x4(rotateMat)
+//		var rotateMat: SCNMatrix4
+//		var rotateSimd: simd_float4x4
+//		// 以下、回転順序を考慮すること
+//		let deltaX: Float = 0.0
+//		let deltaY: Float = -45.0
+//		let deltaZ: Float = -45.0
+//		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaY), 0, 1, 0)	// Y軸を中心とした回転
+//		rotateSimd = matrix_float4x4(rotateMat)
+//		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaX), 1, 0, 0)	// X軸を中心とした回転
+//		rotateSimd = matrix_float4x4(rotateMat)
+//		rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(deltaX), 0, 0, 1)	// X軸を中心とした回転
+//		rotateSimd = matrix_float4x4(rotateMat)
+//
+//		let mtxOut = mtx4 * rotateSimd
+//
+//		glove?.transform = Transform(matrix: mtxOut)
 
-		let mtxOut = mtx4 * rotateSimd
-
-		glove?.transform = Transform(matrix: mtxOut)
-//		glove?.transform = Transform(matrix: mtx4)
+		glove?.transform = Transform(matrix: mtx4)
 		glove?.scale = [0.5, 0.5, 0.5]
 	}
 	
@@ -134,4 +134,40 @@ class ViewModel {
 
         return textEntity
     }
+	
+	func setupJointBalls() {
+		if let ent1 = ball?.clone(recursive: true) {
+			ent1.scale = [0.1, 0.1, 0.1]
+			ent1.position = SIMD3(x: 0, y: 0, z: 0)
+//			ent1.position = SIMD3(x: 0, y: 1.5, z: -1)
+			contentEntity.addChild(ent1)
+		}
+		if let ent2 = ball?.clone(recursive: true) {
+			ent2.scale = [0.001, 0.001, 0.001]
+			ent2.position = SIMD3(x: 0, y: 1.8, z: -1)
+			contentEntity.addChild(ent2)
+		}
+
+		if let b = ball {
+			for handNo in 0...1 {
+				for fingerNo in 0...4 {
+					for jointNo in 0...2 {
+						let xx: Float = Float(handNo) * 0.1 + 0.0
+						let yy: Float = Float(fingerNo) * 0.1 + 1.5
+						let zz: Float = Float(jointNo) * 0.1 - 1.0
+
+						var ent = b.clone(recursive: true)
+						ent.scale = [0.001, 0.001, 0.001]
+						ent.position = SIMD3(x: xx, y: yy, z: zz)
+						ent.components.set(InputTargetComponent())
+						ent.generateCollisionShapes(recursive: true)
+
+//						jointObj[handNo][fingerNo][jointNo] = ent
+						contentEntity.addChild(ent)
+					}
+				}
+			}
+		}
+	}
+
 }

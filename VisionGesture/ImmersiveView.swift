@@ -37,8 +37,6 @@ struct ImmersiveView: View {
 			// パーティクル
 			RealityView { content in
 				if let scene = try? await Entity(named: "Scene", in: realityKitContentBundle) {	// パーティクル
-//					scene.scale = [0.15, 0.15, 0.15]
-//					scene.position = SIMD3(x: 0, y: 1.5, z: -1)
 					content.add(scene)
 				}
 			}
@@ -84,10 +82,12 @@ struct ImmersiveView: View {
 					viewModel.setTriangleEntiry(ent: triangle)//
 					let glove = try await Entity(named: "RubberGlove", in: realityKitContentBundle)
 					viewModel.setGloveEntiry(ent: glove)
+					let b = try await Entity(named: "Sun", in: realityKitContentBundle)
+					handModel.setBallEntiry(ent: b)
 				}
 				catch { return }
-				content.add(viewModel.setupContentEntity())	// 物体
 				content.add(handModel.setupContentEntity())	// ハンドトラッキングも描画する
+				content.add(viewModel.setupContentEntity())	// 物体
 			}
 			// クマ
 			RealityView { content, attachments in
@@ -97,7 +97,7 @@ struct ImmersiveView: View {
 					kuma.position = SIMD3(x: 0, y: 1.5, z: -2)
 					kuma.components.set(InputTargetComponent())
 					kuma.generateCollisionShapes(recursive: true)
-					content.add(kuma)
+//					content.add(kuma)
 					
 					if let kumaAttachement = attachments.entity(for: "kuma_label") {
 						kumaAttachement.position = SIMD3(x: 0, y: -0.15, z: 2)
@@ -227,34 +227,35 @@ struct ImmersiveView: View {
 		.task {
 			Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
 				timerCountQuick += 1
-				rotate_kuma()
+//				rotate_kuma()
 				displayHandJoints()
 			}
 		}
 		.task {
 			Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-				let gesDum = Gesture_Aloha(delegate: self)
 				timerCount += 1
 //				textLog("timer job : \(timerCount)")c
 // --- Sun
 				let xPos: Float = Float(timerCount) * 0.02 - 0.8
-//				viewModel.addPoint(SIMD3(x: xPos, y: 1.5, z: -1))
+				viewModel.addPoint(SIMD3(x: xPos, y: 1.5, z: -1))
 // --- Biplane
 				var delta = timerCount*10
 				var joint1 = SIMD3(x: xPos-0.25, y: 1.7, z: -1)	// 底辺左
 				var joint2 = SIMD3(x: xPos+0.25, y: 1.7, z: -1)	// 底辺右
 				var joint3 = SIMD3(x: xPos,      y: 1.8, z: -1)	// 頂点
-				var mtx: simd_float4x4? = gesDum.triangleCenterWithAxis(joint1:joint1, joint2:joint2, joint3:joint3)
+				var mtx: simd_float4x4? = triangleCenterWithAxis(joint1:joint1, joint2:joint2, joint3:joint3)
 				var rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(delta), 0, 0, 1)	// z軸を中心とした10度回転
 				var rotateSimd = matrix_float4x4(rotateMat)
 				var mtxOut = mtx! * rotateSimd
 				viewModel.addPoint4(mtxOut)	// 飛行機を追加描画
+				
+				/*
 // --- Glove
 				delta = timerCount*5
 				joint1 = SIMD3(x: xPos-0.25, y: 1.2, z: -1)	// 底辺左
 				joint2 = SIMD3(x: xPos+0.25, y: 1.2, z: -1)	// 底辺右
 				joint3 = SIMD3(x: xPos,      y: 1.3, z: -1)	// 頂点
-				mtx = gesDum.triangleCenterWithAxis(joint1:joint1, joint2:joint2, joint3:joint3)
+				mtx = triangleCenterWithAxis(joint1:joint1, joint2:joint2, joint3:joint3)
 				rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(delta), 0, 1, 0)	// Y軸を中心とした10度回転
 				rotateSimd = matrix_float4x4(rotateMat)
 				mtxOut = mtx! * rotateSimd
@@ -264,13 +265,14 @@ struct ImmersiveView: View {
 				joint1 = SIMD3(x: xPos-0.05, y: 1.20, z: -1)	// 親指
 				joint2 = SIMD3(x: xPos+0.05, y: 1.20, z: -1)	// 小指
 				joint3 = SIMD3(x: xPos,      y: 1.15, z: -1)	// 手首
-				mtx = gesDum.triangleCenterWithAxis(joint1:joint1, joint2:joint2, joint3:joint3)
+				mtx = triangleCenterWithAxis(joint1:joint1, joint2:joint2, joint3:joint3)
 				rotateMat = SCNMatrix4MakeRotation(.pi/180*Float(delta), 0, 1, 0)	// Y軸を中心とした10度回転
 				rotateSimd = matrix_float4x4(rotateMat)
 				mtxOut = mtx! * rotateSimd
 				viewModel.setPoints([
 					joint1, joint2, joint3	// 3点を移動
 				])
+				*/
 			}
 		}
 	}
@@ -404,6 +406,34 @@ extension ImmersiveView {
 			logText = message+"\r"+logText
 	//		_ = viewModel.addText(text: message)
 		}
+	}
+
+	func triangleCenterWithAxis(joint1:SIMD3<Scalar>?, joint2:SIMD3<Scalar>?, joint3:SIMD3<Scalar>?) -> simd_float4x4? {
+		guard
+			let j1 = joint1,
+			let j2 = joint2,
+			let j3 = joint3
+		else {
+			return nil
+		}
+		
+//		let rightHandIndexFingerTipWorldPosition = matrix_multiply(rightHandAnchor.transform, rightHandIndexFingerTip.rootTransform).columns.3.xyz
+
+		// center of triangle (j1,j2が底辺、j3が頂点の三角形と仮定する)
+		let h1 = (j1+j2) / 2	// half point of j1 & j2
+		let ct = (h1+j3) / 2	// center point (half point of h1 & j3)
+
+		let xAxis = normalize(j2 - j1)
+		let yAxis = normalize(j3 - h1)
+		let zAxis = normalize(cross(xAxis, yAxis))
+
+		let triangleCenterWorldTransform = simd_matrix(
+			SIMD4(xAxis.x, xAxis.y, xAxis.z, 0),
+			SIMD4(yAxis.x, yAxis.y, yAxis.z, 0),
+			SIMD4(zAxis.x, zAxis.y, zAxis.z, 0),
+			SIMD4(ct.x, ct.y, ct.z, 1)
+		)
+		return triangleCenterWorldTransform
 	}
 
 }

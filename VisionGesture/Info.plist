@@ -2,14 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_HandTrackFake._tcp</string>
+		<string>_HandTrackFake._udp</string>
+	</array>
 	<key>NSHandsTrackingUsageDescription</key>
 	<string>Track your hands to detect gestures.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
 		<key>UIApplicationPreferredDefaultSceneSessionRole</key>
 		<string>UISceneSessionRoleImmersiveApplication</string>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
 		<key>UISceneConfigurations</key>
 		<dict>
 			<key>UIWindowSceneSessionRoleCPServicesImmersive</key>
@@ -17,9 +22,9 @@
 				<dict>
 					<key>UISceneClassName</key>
 					<string></string>
-					<key>UISceneDelegateClassName</key>
-					<string></string>
 					<key>UISceneConfigurationName</key>
+					<string></string>
+					<key>UISceneDelegateClassName</key>
 					<string></string>
 					<key>UISceneStoryboardFile</key>
 					<string></string>
@@ -27,7 +32,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>CFBundleIdentifier</key>
-	<string></string>
 </dict>
 </plist>

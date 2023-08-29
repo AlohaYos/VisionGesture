@@ -7,17 +7,128 @@
 //
 
 import Foundation
+import MultipeerConnectivity
 
 let enableHandTrackFake = true
 let appGroupName = "group.com.newtonjapan.handtrackfake"
 
-struct HandTrackFake {
+extension HandTrackFake : MCSessionDelegate {
+	// MARK: Multipeer connectivity
+	
+	func initAsAdvertiser() {
+		advertiserPeerID = MCPeerID(displayName: advertiserName)
+		session = MCSession(peer: advertiserPeerID)
+		session.delegate = self
+		advertiser = MCNearbyServiceAdvertiser(peer: advertiserPeerID, discoveryInfo: nil, serviceType: serviceName)
+		advertiser.delegate = self
+		advertiser.startAdvertisingPeer()
+	}
+
+	func initAsBrowser() {
+		browserPeerID = MCPeerID(displayName: browserName)
+		session = MCSession(peer: browserPeerID)
+		session.delegate = self
+		browser = MCNearbyServiceBrowser(peer: browserPeerID, serviceType: serviceName)
+		browser.delegate = self
+		browser.startBrowsingForPeers()
+	}
+
+	func isSessionActive() -> Bool {
+		return (sessionState == .connected)
+	}
+	
+	func sendHandTrackData(_ jsonStr: String) {
+		do {
+			try session.send(jsonStr.data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
+		} catch let error {
+			print(error.localizedDescription)
+		}
+	}
+
+	func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
+		guard let message = String(data: data, encoding: .utf8) else { return }
+		currentJsonString = message
+		DispatchQueue.main.async {
+		}
+	}
+
+	func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+		let message: String
+		switch state {
+		case .connected:
+			message = "\(peerID.displayName)が接続されました"
+		case .connecting:
+			message = "\(peerID.displayName)が接続中です"
+		case .notConnected:
+			message = "\(peerID.displayName)が切断されました"
+		@unknown default:
+			message = "\(peerID.displayName)が想定外の状態です"
+		}
+		DispatchQueue.main.async {
+			print(message)
+		}
+
+	}
+	
+	
+	func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
+	}
+	
+	func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
+	}
+	
+	func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
+	}
+
+}
+
+extension HandTrackFake: MCNearbyServiceAdvertiserDelegate {
+	
+	func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+		print("receive invitation from \(peerID.description)")
+		invitationHandler(true, session)
+	}
+	
+	func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didNotStartAdvertisingPeer error: Error) {
+		print(error.localizedDescription)
+	}
+}
+
+extension HandTrackFake: MCNearbyServiceBrowserDelegate {
+
+	func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
+		guard let session = session else { return }
+		browser.invitePeer(peerID, to: session, withContext: nil, timeout: 0)
+	}
+
+	func browser(_ browser: MCNearbyServiceBrowser, didNotStartBrowsingForPeers error: Error) {
+		print(error.localizedDescription)
+	}
+	
+	func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
+		print("lost peer")
+	}
+}
+class HandTrackFake: NSObject {
 	private let fileManager = FileManager.default
 	private var fakeRootDirectory = ""
 
+	private let serviceName = "HandTrackFake"
+	private var advertiserName = "HandTrackFakeSender"
+	private var browserName    = "HandTrackFakeReceiver"
+	private var advertiserPeerID : MCPeerID!
+	private var browserPeerID: MCPeerID!
+	private var session: MCSession!
+	private var sessionState: MCSessionState = .notConnected
+	private var advertiser: MCNearbyServiceAdvertiser!
+	private var browser: MCNearbyServiceBrowser!
+	var currentJsonString: String = ""
+	
 	let handTrackDataKey  = "HandTrackData"
 
-	init() {
+	override init() {
+		super.init()
+		
 		// print("### NSHomeDirectory=[\(NSHomeDirectory())]")
 		// /Users/yoshiyuki/Library/Containers/com.newtonjapan.apple-samplecode.HandPose/Data/HandTrackFake
 		fakeRootDirectory = NSHomeDirectory() + "/HandTrackFake"

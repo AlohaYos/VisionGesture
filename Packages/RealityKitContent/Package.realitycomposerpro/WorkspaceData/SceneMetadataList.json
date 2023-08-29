@@ -27,7 +27,8 @@
     "objectMetadataList" : [
       [
         "1510F6C7-214D-4800-9C6C-F3964D5FC3E3",
-        "Root"
+        "Root",
+        "Rubber_Glove"
       ],
       {
         "isExpanded" : true,
@@ -35,8 +36,7 @@
       },
       [
         "1510F6C7-214D-4800-9C6C-F3964D5FC3E3",
-        "Root",
-        "Rubber_Glove"
+        "Root"
       ],
       {
         "isExpanded" : true,
@@ -69,7 +69,7 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
-        "_PlainMaterial"
+        "Sphere_Left"
       ],
       {
         "isExpanded" : true,
@@ -78,7 +78,7 @@
       [
         "AF09ED6F-1707-48FD-8720-65B998362C09",
         "Root",
-        "Sphere_Left"
+        "_PlainMaterial"
       ],
       {
         "isExpanded" : true,

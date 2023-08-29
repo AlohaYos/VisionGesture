@@ -78,6 +78,8 @@ class VisionGestureProcessor {
 
 	typealias Scalar = Float
 
+	let htFake = HandTrackFake()
+
 // MARK: enum
 
 	enum State {
@@ -135,6 +137,7 @@ class VisionGestureProcessor {
 			self?.handleGestureStateChange(state)
 		}
 		stateReset()
+		htFake.initAsBrowser()
 	}
 
 	convenience init(delegate: any View) {
@@ -280,15 +283,15 @@ class VisionGestureProcessor {
 		
 		do {
 			if enableHandTrackFake {
-				let htf = HandTrackFake()
-				if let handTrackJson = htf.groupData(key: htf.handTrackDataKey) {
-					if let dt3D = HandTrackJson3D(jsonStr: handTrackJson) {
+				if htFake.currentJsonString.count>0 {
+					if let dt3D = HandTrackJson3D(jsonStr: htFake.currentJsonString) {
 						handCount = dt3D.handJoints.count
 						if handCount>0 {
 							fingerJoints1 = dt3D.handJoints[0]
+							print("\(htFake.currentJsonString)")
 						}
 						if handCount>1 {
-							fingerJoints1 = dt3D.handJoints[1]
+							fingerJoints2 = dt3D.handJoints[1]
 						}
 					}
 				}
