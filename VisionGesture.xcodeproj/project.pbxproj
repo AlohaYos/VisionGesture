@@ -27,7 +27,6 @@
 		FFD220672A8C740B0036AFCC /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD220622A8C740B0036AFCC /* CGPoint.swift */; };
 		FFD220682A8C740B0036AFCC /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD220632A8C740B0036AFCC /* CGRect.swift */; };
 		FFF99ABC2A9C9493007AC4A4 /* HandTrackFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF99ABA2A9C9493007AC4A4 /* HandTrackFake.swift */; };
-		FFF99ABD2A9C9493007AC4A4 /* HandTrackJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF99ABB2A9C9493007AC4A4 /* HandTrackJson.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,7 +53,6 @@
 		FFD220692A8C76810036AFCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FFF99AB82A9C939D007AC4A4 /* VisionGesture.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VisionGesture.entitlements; sourceTree = "<group>"; };
 		FFF99ABA2A9C9493007AC4A4 /* HandTrackFake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandTrackFake.swift; sourceTree = "<group>"; };
-		FFF99ABB2A9C9493007AC4A4 /* HandTrackJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandTrackJson.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +140,6 @@
 			isa = PBXGroup;
 			children = (
 				FFF99ABA2A9C9493007AC4A4 /* HandTrackFake.swift */,
-				FFF99ABB2A9C9493007AC4A4 /* HandTrackJson.swift */,
 			);
 			path = HandTrackFake;
 			sourceTree = "<group>";
@@ -230,7 +227,6 @@
 				FFD220492A8C72DF0036AFCC /* ContentView.swift in Sources */,
 				FFD2205B2A8C73A70036AFCC /* Gesture_Cursor.swift in Sources */,
 				FFD220652A8C740B0036AFCC /* CGSize.swift in Sources */,
-				FFF99ABD2A9C9493007AC4A4 /* HandTrackJson.swift in Sources */,
 				FFD2205C2A8C73A70036AFCC /* VisionGestureProvider.swift in Sources */,
 				FFD220472A8C72DF0036AFCC /* VisionGestureApp.swift in Sources */,
 				FFD2204B2A8C72DF0036AFCC /* ImmersiveView.swift in Sources */,
