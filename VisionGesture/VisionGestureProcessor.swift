@@ -295,6 +295,9 @@ class VisionGestureProcessor {
 						}
 					}
 				}
+				else {
+					handCount = 0
+				}
 			}
 			else {
 				handCount = observations.count

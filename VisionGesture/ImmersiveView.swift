@@ -303,7 +303,21 @@ struct ImmersiveView: View {
 		}
 	}
 	// ハンドトラッキングの表示
+	static var lastState = gesture_Aloha?.htFake.sessionState
 	func displayHandJoints() {
+		var nowState = gesture_Aloha?.htFake.sessionState
+		if nowState != ImmersiveView.lastState {
+			switch nowState {
+			case .connected:
+				textLog("HandTrackFake connected.")
+			case .connecting:
+				textLog("HandTrackFake connecting...")
+			default:
+				textLog("HandTrackFake not connected.")
+			}
+			ImmersiveView.lastState = nowState
+		}
+		
 		handModel.setHandJoints(left : gesture_Aloha?.handJoint(RorL: VisionGestureProcessor.WhichHand.left),
 								right: gesture_Aloha?.handJoint(RorL: VisionGestureProcessor.WhichHand.right))
 		handModel.showFingers()
@@ -326,26 +340,29 @@ extension ImmersiveView: VisionGestureDelegate {
 	func handle_gestureAloha(event: VisionGestureDelegateEvent) {
 		switch event.type {
 		case .Moved2D:
-			textLog("Aloha: gesture 2D")
+//			textLog("Aloha: gesture 2D")
 			if let pnt = event.location[0] as? SIMD3<Scalar> {
 				add_point(pos: pnt)
 			}
 		case .Moved3D:
-			textLog("Aloha: gesture 3D")
+//			textLog("Aloha: gesture 3D")
 			set_points(pos: event.location as! [SIMD3<Scalar>])
 		case .Moved4D:
-			textLog("Aloha: gesture 4D")
+//			textLog("Aloha: gesture 4D")
 			if let pnt = event.location[0] as? simd_float4x4 {
 				viewModel.moveGlove(pnt)
 			}
 		case .Began:
-			textLog("Aloha: gesture began")
+//			textLog("Aloha: gesture began")
+			break
 		case .Ended:
-			textLog("Aloha: gesture ended")
+//			textLog("Aloha: gesture ended")
+			break
 		case .Canceled:
-			textLog("Aloha: gesture canceled")
+//			textLog("Aloha: gesture canceled")
+			break
 		case .Fired:
-			textLog("Aloha: gesture fired")
+//			textLog("Aloha: gesture fired")
 			break
 		default:
 			break
@@ -356,36 +373,42 @@ extension ImmersiveView: VisionGestureDelegate {
 	func handle_gestureCursor(event: VisionGestureDelegateEvent) {
 		switch event.type {
 		case .Moved2D:
-			textLog("Cursor: gesture 2D")
+//			textLog("Cursor: gesture 2D")
+			break
 		case .Moved3D:
-			textLog("Cursor: gesture 3D")
+//			textLog("Cursor: gesture 3D")
+			break
 		case .Moved4D:
-			textLog("Cursor: gesture 4D")
+//			textLog("Cursor: gesture 4D")
+			break
 		case .Began:
-			textLog("Cursor: gesture began")
+//			textLog("Cursor: gesture began")
+			break
 		case .Ended:
-			textLog("Cursor: gesture ended")
+//			textLog("Cursor: gesture ended")
+			break
 		case .Canceled:
-			textLog("Cursor: gesture canceled")
+//			textLog("Cursor: gesture canceled")
+			break
 		case .Fired:
-			textLog("Cursor: gesture fired")
+//			textLog("Cursor: gesture fired")
 			var typeStr: String = ""
 			switch event.triggerType {
 			case Gesture_Cursor.CursorType.up.rawValue:
-				typeStr = "UP"
+				typeStr = "Cursor: UP"
 			case Gesture_Cursor.CursorType.down.rawValue:
-				typeStr = "DOWN"
+				typeStr = "Cursor: DOWN"
 			case Gesture_Cursor.CursorType.left.rawValue:
-				typeStr = "LEFT"
+				typeStr = "Cursor: LEFT"
 			case Gesture_Cursor.CursorType.right.rawValue:
-				typeStr = "RIGHT"
+				typeStr = "Cursor: RIGHT"
 			case Gesture_Cursor.CursorType.fire.rawValue:
-				typeStr = "FIRE"
+				typeStr = "Cursor: FIRE"
 			case Gesture_Cursor.CursorType.unknown.rawValue:
-				typeStr = "UNKNOWN"
+				typeStr = "Cursor: UNKNOWN"
 				break
 			default:
-				typeStr = "DEFAULT"
+				typeStr = "Cursor: DEFAULT"
 				break
 			}
 			textLog("    [\(typeStr)]")

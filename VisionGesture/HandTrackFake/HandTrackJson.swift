@@ -212,7 +212,8 @@ struct HandTrackJson3D: Codable {
 						continue
 					}
 					if let dt2D = handTrackData2D[hand][finger][joint] {
-						hj[hand][finger][joint] = SIMD3(x: Float(dt2D.x), y: Float(dt2D.y), z: 0.0)
+						hj[hand][finger][joint] = convertVNRecognizedPointToHandTrackingProvider(p: dt2D)
+//						hj[hand][finger][joint] = SIMD3(x: Float(dt2D.x), y: Float(dt2D.y), z: 0.0)
 					}
 				}
 			}
@@ -227,6 +228,13 @@ struct HandTrackJson3D: Codable {
 			handJoints.append(hj[1])
 		}
 	}
+
+	// iOSのVisionKit座標からvisionOSのワールド座標への変換
+	func convertVNRecognizedPointToHandTrackingProvider(p: VNRecognizedPointFake) -> SIMD3<Scalar> {
+		return SIMD3(x: Float(p.x-0.7), y: -(Float(p.y)-2.5), z: Float(-2.0))
+//		return SIMD3(x: Float(p.x), y: Float(p.y), z: Float(0.0))
+	}
+	
 
 	// IN : Json data (String)
 	init?(jsonStr: String) {

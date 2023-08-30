@@ -38,8 +38,12 @@ extension HandTrackFake : MCSessionDelegate {
 	}
 	
 	func sendHandTrackData(_ jsonStr: String) {
+		var sendStr: String = jsonStr
+		if sendStr.count == 0 {
+			sendStr = "__NoData__"
+		}
 		do {
-			try session.send(jsonStr.data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
+			try session.send(sendStr.data(using: .utf8)!, toPeers: session.connectedPeers, with: .reliable)
 		} catch let error {
 			print(error.localizedDescription)
 		}
@@ -48,21 +52,25 @@ extension HandTrackFake : MCSessionDelegate {
 	func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
 		guard let message = String(data: data, encoding: .utf8) else { return }
 		currentJsonString = message
+		if message == "__NoData__" {
+			currentJsonString = ""
+		}
 		DispatchQueue.main.async {
 		}
 	}
 
 	func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
 		let message: String
+		self.sessionState = state
 		switch state {
 		case .connected:
-			message = "\(peerID.displayName)が接続されました"
+			message = "\(peerID.displayName) connected."
 		case .connecting:
-			message = "\(peerID.displayName)が接続中です"
+			message = "Connecting \(peerID.displayName)"
 		case .notConnected:
-			message = "\(peerID.displayName)が切断されました"
+			message = "\(peerID.displayName) disconnected."
 		@unknown default:
-			message = "\(peerID.displayName)が想定外の状態です"
+			message = "\(peerID.displayName) status unknown."
 		}
 		DispatchQueue.main.async {
 			print(message)
@@ -119,11 +127,11 @@ class HandTrackFake: NSObject {
 	private var advertiserPeerID : MCPeerID!
 	private var browserPeerID: MCPeerID!
 	private var session: MCSession!
-	private var sessionState: MCSessionState = .notConnected
 	private var advertiser: MCNearbyServiceAdvertiser!
 	private var browser: MCNearbyServiceBrowser!
 	var currentJsonString: String = ""
-	
+	var sessionState: MCSessionState = .notConnected
+
 	let handTrackDataKey  = "HandTrackData"
 
 	override init() {

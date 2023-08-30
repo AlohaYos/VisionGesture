@@ -45,6 +45,7 @@ class ViewModel {
 
 	func setPoints(_ point: [SIMD3<Scalar>?]) {
 		guard let b = thumbTip else { return }
+		guard point.count >= 3 else { return }
 		guard let thumbPos = point[0], let littlePos = point[1], let wristPos = point[2] else { return }
 
 		thumbTip?.position = thumbPos
