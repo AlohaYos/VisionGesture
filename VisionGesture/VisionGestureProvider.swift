@@ -54,7 +54,7 @@ class VisionGestureProvider: NSObject {
 	}
 	
 	func publishHandTrackingUpdates() async {
-		if enableHandTrackFake {
+		if handTrackFake.enableFake {
 			DispatchQueue.main.async {
 				Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { timer in
 					for processor in self.gestureProcessors {

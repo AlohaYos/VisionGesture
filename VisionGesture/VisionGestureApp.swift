@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+let handTrackFake = HandTrackFake()
+
 @main
 struct VisionGestureApp: App {
 	var body: some Scene {

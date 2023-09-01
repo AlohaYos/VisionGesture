@@ -303,9 +303,9 @@ struct ImmersiveView: View {
 		}
 	}
 	// ハンドトラッキングの表示
-	static var lastState = gesture_Aloha?.htFake.sessionState
+	static var lastState = handTrackFake.sessionState
 	func displayHandJoints() {
-		var nowState = gesture_Aloha?.htFake.sessionState
+		var nowState = handTrackFake.sessionState
 		if nowState != ImmersiveView.lastState {
 			switch nowState {
 			case .connected:
