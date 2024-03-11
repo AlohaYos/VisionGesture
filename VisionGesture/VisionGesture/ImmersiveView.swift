@@ -12,6 +12,10 @@ import MultipeerConnectivity
 
 var gestureAloha: Gesture_Aloha?
 var gestureDraw: Gesture_Draw?
+// TODO: MyGesture: add your gesture
+var myGesture: Gesture_MyGesture?
+
+
 var zDepth:Float = 0.25
 
 struct ImmersiveView: View {
@@ -77,6 +81,8 @@ struct ImmersiveView: View {
 			await handTrackProcess.handTrackingStart()
 			gestureDraw = Gesture_Draw(delegate: self)
 			gestureAloha = Gesture_Aloha(delegate: self)
+			// TODO: MyGesture: create gesture object
+			myGesture = Gesture_MyGesture(delegate: self)
 		}
 		.task {
 			await handTrackProcess.monitorSessionEvents()
@@ -93,6 +99,8 @@ struct ImmersiveView: View {
 					}
 					gestureDraw?.checkGesture(handJoints: fingerJoints)
 					gestureAloha?.checkGesture(handJoints: fingerJoints)
+					// TODO: MyGesture: check gesture
+					myGesture?.checkGesture(handJoints: fingerJoints)
 				}
 			})
 		}
@@ -142,8 +150,33 @@ extension ImmersiveView: GestureDelegate {
 		if gesture is Gesture_Draw {
 			handle_gestureDraw(event: event)
 		}
+		// TODO: MyGesture: handle MyGesture delegate
+		if gesture is Gesture_MyGesture {
+			handle_myGesture(event: event)
+		}
 	}
 	
+	// TODO: MyGesture: make gesture logic
+	func handle_myGesture(event: GestureDelegateEvent) {
+		switch event.type {
+		case .Moved3D:
+			if let pnt = event.location[0] as? SIMD3<Scalar> {
+				// pnt ... gesture location in immersive space
+			}
+		case .Fired:
+			break
+		case .Moved2D:
+			break
+		case .Began:
+			break
+		case .Ended:
+			break
+		case .Canceled:
+			break
+		default:
+			break
+		}
+	}
 	// Draw
 	func handle_gestureDraw(event: GestureDelegateEvent) {
 		switch event.type {

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FF2191402A9F475F00352445 /* HandTrackFake.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF21913F2A9F475F00352445 /* HandTrackFake.swift */; };
 		FF2191422A9F491100352445 /* HandModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2191412A9F491100352445 /* HandModel.swift */; };
+		FF27FE2B2B9FA20800AE7F9A /* Gesture_MyGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF27FE2A2B9FA20800AE7F9A /* Gesture_MyGesture.swift */; };
 		FF42704E2AA19EC1001A0627 /* GestureBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42704D2AA19EC1001A0627 /* GestureBase.swift */; };
 		FF4270502AA1B9FD001A0627 /* Gesture_Aloha.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42704F2AA1B9FD001A0627 /* Gesture_Aloha.swift */; };
 		FF7E199B2ABA8B2A007AD74A /* Gesture_Draw.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7E199A2ABA8B2A007AD74A /* Gesture_Draw.swift */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		FF21913F2A9F475F00352445 /* HandTrackFake.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HandTrackFake.swift; path = ../../HandTrackFake/HandTrackFake.swift; sourceTree = "<group>"; };
 		FF2191412A9F491100352445 /* HandModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandModel.swift; sourceTree = "<group>"; };
+		FF27FE2A2B9FA20800AE7F9A /* Gesture_MyGesture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture_MyGesture.swift; sourceTree = "<group>"; };
 		FF42704D2AA19EC1001A0627 /* GestureBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestureBase.swift; sourceTree = "<group>"; };
 		FF42704F2AA1B9FD001A0627 /* Gesture_Aloha.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gesture_Aloha.swift; sourceTree = "<group>"; };
 		FF7E199A2ABA8B2A007AD74A /* Gesture_Draw.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gesture_Draw.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				FF42704D2AA19EC1001A0627 /* GestureBase.swift */,
 				FF42704F2AA1B9FD001A0627 /* Gesture_Aloha.swift */,
 				FF7E199A2ABA8B2A007AD74A /* Gesture_Draw.swift */,
+				FF27FE2A2B9FA20800AE7F9A /* Gesture_MyGesture.swift */,
 			);
 			path = Gesture;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				FFE267FF2B9D76FE00489117 /* Hands.swift in Sources */,
 				FFCD12F02A9F462C0099424C /* ContentView.swift in Sources */,
 				FF2191422A9F491100352445 /* HandModel.swift in Sources */,
+				FF27FE2B2B9FA20800AE7F9A /* Gesture_MyGesture.swift in Sources */,
 				FF7E199B2ABA8B2A007AD74A /* Gesture_Draw.swift in Sources */,
 				FF2191402A9F475F00352445 /* HandTrackFake.swift in Sources */,
 				FFCD12EE2A9F462C0099424C /* TrackingReceiverApp.swift in Sources */,
