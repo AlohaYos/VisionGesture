@@ -5,8 +5,9 @@
  - If you don't have real VisionPro device, "[HandTrackFake](https://github.com/AlohaYos/VisionGesture/blob/main/README.md#handtrackfake)" will be a good debugging partner, because "[HandTrackFake](https://github.com/AlohaYos/VisionGesture/blob/main/README.md#handtrackfake)" provides handtracking feature which works on VisionPro simulator (see below).
 
 ## Play VisionGesture
+You can do this with VisionGesture!
 
-(video coming soon)
+https://github.com/AlohaYos/VisionGesture/assets/4338056/6c93507e-dc84-40a7-9be4-801c27445055
 
 ## Make your own spatial gesture
 
