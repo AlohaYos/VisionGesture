@@ -2,7 +2,7 @@
  - Sample code of visionOS HandTracking on real device.
  - Virtual hands entities in immersive space.
  - Make your own spatial gesture!
- - If you don't have real VisionPro device, "[HandTrackFake](https://github.com/AlohaYos/VisionGesture/blob/main/README.md#handtrackfake)" will be a good debugging partner, because "[HandTrackFake](https://github.com/AlohaYos/VisionGesture/blob/main/README.md#handtrackfake)" provides handtracking feature which works on VisionPro simulator (see below).
+ - If you don't have real VisionPro device, "[HandTrackFake](https://github.com/AlohaYos/VisionGesture/blob/main/README.md#handtrackfake)" will be a good debugging partner, because "[HandTrackFake](https://github.com/AlohaYos/VisionGesture/blob/main/README.md#handtrackfake)" provides handtracking feature which works on VisionPro simulator.
 
 ## Play VisionGesture
 You can do this with VisionGesture!
@@ -16,10 +16,10 @@ Search "TODO: MyGesture" in VisionGesture project on Xcode.
 Gestrue_Draw.swift and Gesture_Aloha.swift are the good example of how to make your own spatial gestures.
 
 ## HandTrackFake
-Simulate hand tracking movements in order to debug hand tracking on visionOS simulator.  
-You no longer need real VisionPro device to test your spatial gestures.
+Simulate hand tracking movements in order to debug hand tracking on VisionPro simulator.  
+You no longer need real VisionPro device to test your spatial gestures.
 This module uses VNHumanHandPoseObservation on Mac to capture finger movement.  
-And send that hand tracking data to visionOS simulator on Mac via bluetooth.  
+And send that hand tracking data to VisionPro simulator on Mac via bluetooth.  
 All you need is Mac (additionally iPhone/iPad as TrackingSender) to debug visionOS hand tracking.  
 
 ### HandTrackFake module
@@ -63,7 +63,7 @@ Bonjour services
 #### VisionGesture (receiver of fake handtracking data)
  - Receive hand tracking data (Json) from FakeTrackingSender.app via bluetooth.
  - Decode Json data into hand tracking data (3D).
- - Display hands (finger positions) on visionOS simulator display.
+ - Display hands (finger positions) on VisionPro simulator display.
 
 https://github.com/AlohaYos/ProjectJarvis/assets/4338056/d6497d50-848b-4ca9-bb9f-bf70078778aa
 
