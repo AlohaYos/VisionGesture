@@ -7,7 +7,7 @@
 ## Play VisionGesture
 You can do this with VisionGesture!
 
-https://github.com/AlohaYos/VisionGesture/assets/4338056/6c93507e-dc84-40a7-9be4-801c27445055
+https://github.com/AlohaYos/VisionGesture/assets/4338056/0c0584e4-c021-4af2-a1b5-b2d7d392f498
 
 ## Make your own spatial gesture
 
