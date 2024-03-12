@@ -15,6 +15,30 @@ Gesture template code is available.
 Search "TODO: MyGesture" in VisionGesture project on Xcode.  
 Gestrue_Draw.swift and Gesture_Aloha.swift are the good example of how to make your own spatial gestures.
 
+### Create the gesture logic in [Gesture_MyGesture.swift](https://github.com/AlohaYos/VisionGesture/blob/main/VisionGesture/VisionGesture/Gesture/Gesture_MyGesture.swift).
+・Calculate the positional relationship of finger joints.  
+・When the hand make a specific pose, it means the gesture has started.  
+・While the gesture is valid, the hand position is used to perform gesture-delegate job.  
+・When the hand make another specific pose, it means the gesture has ended.  
+
+![01](https://github.com/AlohaYos/VisionGesture/assets/4338056/7b862de3-7fee-45aa-a4c2-21cbbea8c72c)
+
+### Use GestureDelegate(in [ImmersiveView.swift](https://github.com/AlohaYos/VisionGesture/blob/main/VisionGesture/VisionGesture/ImmersiveView.swift)) to create application-specific jobs using gestures.
+- GestureDelegate will be called back when Gesture_MyGesture.swift judge specific gestures.  
+- Spatial coordinates will be passed to the delegate job.  
+
+![03](https://github.com/AlohaYos/VisionGesture/assets/4338056/d39feeef-d6a6-48fc-93b1-4a60f3b18d93)
+
+### In [GestureBase.swift](https://github.com/AlohaYos/VisionGesture/blob/main/VisionGesture/VisionGesture/Gesture/GestureBase.swift), create a function that becomes the basis for determining gestures.
+- Some functions are already provided.  
+- To calculate finger joint positions that cannot be determined using existing functions, a new calculation function is required.
+
+![02](https://github.com/AlohaYos/VisionGesture/assets/4338056/92f03ea1-df86-4f9e-86e8-a16ac68789f8)
+
+- Please look at the sample code to understand how to compare coordinate positions of joints.  
+
+![04](https://github.com/AlohaYos/VisionGesture/assets/4338056/b65d7079-dc50-4906-9087-6731aebf00c5)
+
 ## HandTrackFake
 Simulate hand tracking movements in order to debug hand tracking on VisionPro simulator.  
 You no longer need real VisionPro device to test your spatial gestures.
