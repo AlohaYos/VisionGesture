@@ -4,8 +4,8 @@
  - Make your own spatial gesture!
  - If you don't have real VisionPro device, "[HandTrackFake](https://github.com/AlohaYos/VisionGesture/blob/main/README.md#handtrackfake)" will be a good debugging partner, because "[HandTrackFake](https://github.com/AlohaYos/VisionGesture/blob/main/README.md#handtrackfake)" provides handtracking feature which works on VisionPro simulator.
 
-## Play VisionGesture
-You can do this with VisionGesture!
+## VisionGesture Playground
+You can do this with VisionGesture. Play and create your own gestures!
 
 https://github.com/AlohaYos/VisionGesture/assets/4338056/0c0584e4-c021-4af2-a1b5-b2d7d392f498
 
