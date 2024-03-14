@@ -158,6 +158,8 @@ This module uses VNHumanHandPoseObservation on Mac to capture finger movement.
 And send that hand tracking data to VisionPro simulator on Mac via bluetooth.  
 All you need is Mac (additionally iPhone/iPad as TrackingSender) to debug visionOS hand tracking.  
 
+![handtrackfakefig](https://github.com/AlohaYos/VisionGesture/assets/4338056/e1e69621-22d9-4f9f-8d9f-5d9ffd26c4bb)
+
 ### HandTrackFake module
 HandTrackFake.swift
 ```swift
