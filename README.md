@@ -151,6 +151,8 @@ class GestureBase {
 }
 ```
 
+---
+
 ## HandTrackFake
 Simulate hand tracking movements in order to debug hand tracking on VisionPro simulator.  
 You no longer need real VisionPro device to test your spatial gestures.
