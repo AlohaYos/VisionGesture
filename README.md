@@ -241,3 +241,6 @@ Bonjour services
 VisionGestrue is an open source version of some of the techniques used in the "[Air Poolbar](https://apps.apple.com/us/app/air-poolbar/id6473489849)" app which is available on the visionOS App Store.
 
 [![alt](http://img.youtube.com/vi/-KGQhV8TA-Q/0.jpg)](https://www.youtube.com/watch?v=-KGQhV8TA-Q)
+
+## Explanation in other languages
+日本語での説明は[Qiita](https://qiita.com/AlohaYos/items/aa7a6b0190d35a275e63)を御覧ください。
