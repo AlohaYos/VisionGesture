@@ -13,7 +13,8 @@ https://github.com/AlohaYos/VisionGesture/assets/4338056/0c0584e4-c021-4af2-a1b5
 
 Gesture template code is available.  
 Search "TODO: MyGesture" in VisionGesture project on Xcode.  
-Gestrue_Draw.swift and Gesture_Aloha.swift are the good example of how to make your own spatial gestures.
+Gestrue_Draw.swift and Gesture_Aloha.swift are the good example of how to make your own spatial gestures.  
+Now add your own gestures and send me pull request!
 
 ### Create the gesture logic in [Gesture_MyGesture.swift](https://github.com/AlohaYos/VisionGesture/blob/main/VisionGesture/VisionGesture/Gesture/Gesture_MyGesture.swift).
 - Calculate the positional relationship of finger joints.  
