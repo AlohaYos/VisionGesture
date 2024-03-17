@@ -9,6 +9,16 @@ You can do this with VisionGesture. Play and create your own gestures!
 
 https://github.com/AlohaYos/VisionGesture/assets/4338056/0c0584e4-c021-4af2-a1b5-b2d7d392f498
 
+If you want to use VisionGesture in simulator, set enableFake to true in [HandTrackFake.swift](https://github.com/AlohaYos/VisionGesture/blob/main/HandTrackFake/HandTrackFake.swift)
+
+```swift
+class HandTrackFake: NSObject {
+	var enableFake = true  // <--- true:simulator, false:real device
+	var rotateHands = false
+	var zDepth: Float = 0.0
+```
+
+
 ## Make your own spatial gesture
 
 Gesture template code is available.  
