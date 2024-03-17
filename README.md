@@ -188,6 +188,9 @@ var enableFake = true // false:use VisionPro real handtracking.  true:use fake h
 
 https://github.com/AlohaYos/ProjectJarvis/assets/4338056/9ba03b68-99d9-46c4-87be-5b2338081ef4
 
+Mac camera has no depth infomation of Z axis, but FakeTrackingSender has slider input to fake Z-depth.
+![zaxis](https://github.com/AlohaYos/VisionGesture/assets/4338056/06ffcdd4-4321-4883-bce4-2d5cb5e4f2c7)
+
 AppDelegate.swift
 ```swift
 let handTrackFake = HandTrackFake()
