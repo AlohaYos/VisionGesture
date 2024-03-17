@@ -99,7 +99,7 @@ extension HandTrackFake : MCSessionDelegate {
 				let handCount = dt3D.handJoints.count
 				if handCount>0 {
 					fingerJoints1 = dt3D.handJoints[0]
-					print("\(handTrackFake.currentJsonString)")
+//					print("\(handTrackFake.currentJsonString)")
 				}
 				if handCount>1 {
 					fingerJoints2 = dt3D.handJoints[1]
@@ -230,6 +230,13 @@ struct VNRecognizedPointFake: Codable {
 	}
 }
 
+// MARK: HandTrackTransferData
+
+struct HandTrackTransferData: Codable {
+	var points: [[[VNRecognizedPointFake?]]] = []
+	var zDepth: Float = 0.0
+}
+
 // MARK: HandTrackJson2D
 
 struct HandTrackJson2D: Codable {
@@ -245,7 +252,6 @@ struct HandTrackJson2D: Codable {
 	init?(jsonStr: String) {
 		guard let jsonData = jsonStr.data(using: .utf8) else { return nil }
 		if let newValue = try? JSONDecoder().decode([[[VNRecognizedPointFake?]]].self, from: jsonData) {
-//			handJointsFake = newValue
 		} else {
 			return nil
 		}
@@ -260,6 +266,11 @@ struct HandTrackJson2D: Codable {
 		}
 	}
 	
+	// IN : Json data (Data)
+	init?(points: [[[VNRecognizedPointFake?]]]) {
+		handJointsFake = points
+	}
+	
 	// OUT : Json data (String)
 	var jsonStr: String {
 		var jsonString = ""
@@ -268,7 +279,10 @@ struct HandTrackJson2D: Codable {
 		if handJoints.count == 0 { return jsonString }
 		
 		do {
-			let jsonData = try encoder.encode(convertFake(handJoints))
+			var transData = HandTrackTransferData()
+			transData.points = convertFake(handJoints)
+			transData.zDepth = handTrackFake.zDepth
+			let jsonData = try encoder.encode(transData)
 			jsonString = String(data: jsonData, encoding: .utf8)!
 		}
 		catch {
@@ -461,18 +475,24 @@ struct HandTrackJson3D: Codable {
 		let y_shift:Double = 0.5
 		pp.y += y_shift
 
-		return SIMD3(x: Float(-pp.x), y: (Float(pp.y)), z: Float(0.0))
+		return SIMD3(x: Float(-pp.x), y: (Float(pp.y)), z: handTrackFake.zDepth)
 	}
 
 	// IN : Json data (String)
 	init?(jsonStr: String, rotate: Bool = false) {
 		rotateHands = rotate
 		guard let jsonData = jsonStr.data(using: .utf8) else { return nil }
-		guard let dt2D = HandTrackJson2D(json: jsonData) else { return nil }
-		guard dt2D.handJointsFake.count > 0 else { return }
-		
-		handJoints = convert2Dto3D(handTrackData2D: dt2D.handJointsFake)
-		handJoints = rotate3D(dt3D: handJoints)
+		do {
+			let decoder = JSONDecoder()
+			var transData:HandTrackTransferData = try decoder.decode(HandTrackTransferData.self, from: jsonData)
+			handTrackFake.zDepth = transData.zDepth
+			guard let dt2D = HandTrackJson2D(points: transData.points) else { return nil }
+			guard dt2D.handJointsFake.count > 0 else { return }
+			handJoints = convert2Dto3D(handTrackData2D: dt2D.handJointsFake)
+			handJoints = rotate3D(dt3D: handJoints)
+		} catch {
+			
+		}
 	}
 
 	// IN : Json data (Data)
